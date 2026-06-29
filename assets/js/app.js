@@ -1,0 +1,382 @@
+(function () {
+    var menuButtons = document.querySelectorAll('[data-menu-target]');
+    var panels = document.querySelectorAll('[data-generator-panel]');
+
+    var npcButton = document.querySelector('[data-npc-generate-button]');
+    var minInput = document.querySelector('[data-level-min]');
+    var maxInput = document.querySelector('[data-level-max]');
+    var raceFilter = document.querySelector('[data-filter-race]');
+    var classFilter = document.querySelector('[data-filter-class]');
+    var cultureFilter = document.querySelector('[data-filter-culture]');
+    var npcFields = document.querySelectorAll('[data-npc-field]');
+    var npcStatus = document.querySelector('[data-npc-status]');
+
+    var lootButton = document.querySelector('[data-loot-generate-button]');
+    var lootSource = document.querySelector('[data-loot-source]');
+    var lootRarity = document.querySelector('[data-loot-rarity]');
+    var lootFields = document.querySelectorAll('[data-loot-field]');
+    var lootStatus = document.querySelector('[data-loot-status]');
+    var lootItems = document.querySelector('[data-loot-items]');
+
+    var placeButton = document.querySelector('[data-place-generate-button]');
+    var placeType = document.querySelector('[data-place-type]');
+    var placeOccupants = document.querySelector('[data-place-occupants]');
+    var placeFields = document.querySelectorAll('[data-place-field]');
+    var placeStatus = document.querySelector('[data-place-status]');
+
+    var romanceButton = document.querySelector('[data-romance-generate-button]');
+    var romanceTone = document.querySelector('[data-romance-tone]');
+    var romanceDrama = document.querySelector('[data-romance-drama]');
+    var romanceGenderA = document.querySelector('[data-romance-gender-a]');
+    var romanceGenderB = document.querySelector('[data-romance-gender-b]');
+    var romanceFields = document.querySelectorAll('[data-romance-field]');
+    var romanceStatus = document.querySelector('[data-romance-status]');
+    var romancePartners = document.querySelector('[data-romance-partners]');
+
+    function setActiveMenu(target) {
+        menuButtons.forEach(function (button) {
+            var isCurrent = button.getAttribute('data-menu-target') === target;
+            button.classList.toggle('is-active', isCurrent);
+            button.setAttribute('aria-pressed', isCurrent ? 'true' : 'false');
+        });
+
+        panels.forEach(function (panel) {
+            var isCurrent = panel.getAttribute('data-generator-panel') === target;
+            panel.classList.toggle('is-hidden', !isCurrent);
+        });
+    }
+
+    function setNpcLoading(isLoading) {
+        if (!npcButton) {
+            return;
+        }
+
+        npcButton.disabled = isLoading;
+        npcButton.textContent = isLoading ? 'Gerando...' : 'Gerar NPC';
+    }
+
+    function renderNpc(npc) {
+        npcFields.forEach(function (field) {
+            var key = field.getAttribute('data-npc-field');
+            field.textContent = npc[key] || '-';
+            field.classList.remove('flash');
+
+            // Force reflow to restart the highlight animation on new data.
+            void field.offsetWidth;
+            field.classList.add('flash');
+        });
+    }
+
+    function setLootLoading(isLoading) {
+        if (!lootButton) {
+            return;
+        }
+
+        lootButton.disabled = isLoading;
+        lootButton.textContent = isLoading ? 'Gerando...' : 'Gerar Loot';
+    }
+
+    function renderLoot(loot) {
+        lootFields.forEach(function (field) {
+            var key = field.getAttribute('data-loot-field');
+            field.textContent = loot[key] || '-';
+            field.classList.remove('flash');
+            void field.offsetWidth;
+            field.classList.add('flash');
+        });
+
+        if (!lootItems) {
+            return;
+        }
+
+        lootItems.innerHTML = '';
+        (loot.items || []).forEach(function (item) {
+            var entry = document.createElement('li');
+            var title = document.createElement('strong');
+            var meta = document.createElement('span');
+            var detail = document.createElement('p');
+
+            title.textContent = item.name || 'Item desconhecido';
+            meta.textContent = (item.type || '-') + ' | ' + (item.condition || '-') + ' | ' + (item.value || '-');
+            detail.textContent = item.detail || '';
+
+            entry.appendChild(title);
+            entry.appendChild(meta);
+            entry.appendChild(detail);
+            lootItems.appendChild(entry);
+        });
+    }
+
+    function setPlaceLoading(isLoading) {
+        if (!placeButton) {
+            return;
+        }
+
+        placeButton.disabled = isLoading;
+        placeButton.textContent = isLoading ? 'Gerando...' : 'Gerar Lugar';
+    }
+
+    function renderPlace(place) {
+        placeFields.forEach(function (field) {
+            var key = field.getAttribute('data-place-field');
+            field.textContent = place[key] || '-';
+            field.classList.remove('flash');
+            void field.offsetWidth;
+            field.classList.add('flash');
+        });
+    }
+
+    function setRomanceLoading(isLoading) {
+        if (!romanceButton) {
+            return;
+        }
+
+        romanceButton.disabled = isLoading;
+        romanceButton.textContent = isLoading ? 'Gerando...' : 'Gerar Par Romantico';
+    }
+
+    function renderRomance(romance) {
+        romanceFields.forEach(function (field) {
+            var key = field.getAttribute('data-romance-field');
+            field.textContent = romance[key] || '-';
+            field.classList.remove('flash');
+            void field.offsetWidth;
+            field.classList.add('flash');
+        });
+
+        if (!romancePartners) {
+            return;
+        }
+
+        romancePartners.innerHTML = '';
+        (romance.partners || []).forEach(function (partner) {
+            var entry = document.createElement('li');
+            var title = document.createElement('strong');
+            var meta = document.createElement('span');
+            var detail = document.createElement('p');
+
+            title.textContent = partner.name || 'Parceiro misterioso';
+            meta.textContent = (partner.gender || '-') + ' | prefere: ' + (partner.preference || '-');
+            detail.textContent = 'Estilo de roupa: ' + (partner.style || '-');
+
+            entry.appendChild(title);
+            entry.appendChild(meta);
+            entry.appendChild(detail);
+            romancePartners.appendChild(entry);
+        });
+    }
+
+    async function generateNpc() {
+        var min = Number(minInput ? minInput.value : 1) || 1;
+        var max = Number(maxInput ? maxInput.value : 12) || 12;
+
+        if (min < 1) {
+            min = 1;
+        }
+        if (max < min) {
+            max = min;
+            if (maxInput) {
+                maxInput.value = String(max);
+            }
+        }
+
+        setNpcLoading(true);
+        npcStatus.textContent = 'Invocando nomes, segredos e rumores...';
+
+        try {
+            var race = raceFilter ? raceFilter.value.trim() : '';
+            var playerClass = classFilter ? classFilter.value.trim() : '';
+            var culture = cultureFilter ? cultureFilter.value.trim() : '';
+
+            var params = [
+                'level_min=' + encodeURIComponent(min),
+                'level_max=' + encodeURIComponent(max),
+            ];
+
+            if (race) {
+                params.push('race=' + encodeURIComponent(race));
+            }
+            if (playerClass) {
+                params.push('class=' + encodeURIComponent(playerClass));
+            }
+            if (culture) {
+                params.push('culture=' + encodeURIComponent(culture));
+            }
+
+            var url = 'api/generate_npc.php?' + params.join('&');
+            var response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
+
+            if (!response.ok) {
+                throw new Error('Falha HTTP: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.npc) {
+                throw new Error('Resposta invalida do servidor.');
+            }
+
+            renderNpc(data.npc);
+            npcStatus.textContent = 'NPC gerado com sucesso.';
+        } catch (error) {
+            npcStatus.textContent = 'Nao foi possivel gerar agora. Tente novamente.';
+            console.error(error);
+        } finally {
+            setNpcLoading(false);
+        }
+    }
+
+    async function generateLoot() {
+        setLootLoading(true);
+        lootStatus.textContent = 'Remexendo bolsos, baus e esconderijos...';
+
+        try {
+            var source = lootSource ? lootSource.value.trim() : '';
+            var rarity = lootRarity ? lootRarity.value.trim() : '';
+            var params = [];
+
+            if (source) {
+                params.push('source=' + encodeURIComponent(source));
+            }
+            if (rarity) {
+                params.push('rarity=' + encodeURIComponent(rarity));
+            }
+
+            var url = 'api/generate_loot.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
+            if (!response.ok) {
+                throw new Error('Falha HTTP: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.loot) {
+                throw new Error('Resposta invalida do servidor.');
+            }
+
+            renderLoot(data.loot);
+            lootStatus.textContent = 'Loot gerado com sucesso.';
+        } catch (error) {
+            lootStatus.textContent = 'Nao foi possivel gerar loot agora. Tente novamente.';
+            console.error(error);
+        } finally {
+            setLootLoading(false);
+        }
+    }
+
+    async function generatePlace() {
+        setPlaceLoading(true);
+        placeStatus.textContent = 'Explorando corredores em ruinas...';
+
+        try {
+            var type = placeType ? placeType.value.trim() : '';
+            var occupants = placeOccupants ? placeOccupants.value.trim() : '';
+            var params = [];
+
+            if (type) {
+                params.push('type=' + encodeURIComponent(type));
+            }
+            if (occupants) {
+                params.push('occupants=' + encodeURIComponent(occupants));
+            }
+
+            var url = 'api/generate_place.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
+            if (!response.ok) {
+                throw new Error('Falha HTTP: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.place) {
+                throw new Error('Resposta invalida do servidor.');
+            }
+
+            renderPlace(data.place);
+            placeStatus.textContent = 'Lugar gerado com sucesso.';
+        } catch (error) {
+            placeStatus.textContent = 'Nao foi possivel gerar lugar agora. Tente novamente.';
+            console.error(error);
+        } finally {
+            setPlaceLoading(false);
+        }
+    }
+
+    async function generateRomance() {
+        setRomanceLoading(true);
+        romanceStatus.textContent = 'Tecendo destino e coracoes...';
+
+        try {
+            var tone = romanceTone ? romanceTone.value.trim() : '';
+            var drama = romanceDrama ? romanceDrama.value.trim() : '';
+            var genderA = romanceGenderA ? romanceGenderA.value.trim() : '';
+            var genderB = romanceGenderB ? romanceGenderB.value.trim() : '';
+            var params = [];
+
+            if (tone) {
+                params.push('tone=' + encodeURIComponent(tone));
+            }
+            if (drama) {
+                params.push('drama=' + encodeURIComponent(drama));
+            }
+            if (genderA) {
+                params.push('gender_a=' + encodeURIComponent(genderA));
+            }
+            if (genderB) {
+                params.push('gender_b=' + encodeURIComponent(genderB));
+            }
+
+            var url = 'api/generate_romance.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
+            if (!response.ok) {
+                throw new Error('Falha HTTP: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.romance) {
+                throw new Error('Resposta invalida do servidor.');
+            }
+
+            renderRomance(data.romance);
+            romanceStatus.textContent = 'Par romantico gerado com sucesso.';
+        } catch (error) {
+            romanceStatus.textContent = 'Nao foi possivel gerar par romantico agora. Tente novamente.';
+            console.error(error);
+        } finally {
+            setRomanceLoading(false);
+        }
+    }
+
+    menuButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            setActiveMenu(button.getAttribute('data-menu-target'));
+        });
+    });
+
+    if (npcButton) {
+        npcButton.addEventListener('click', generateNpc);
+    }
+
+    if (lootButton) {
+        lootButton.addEventListener('click', generateLoot);
+    }
+
+    if (placeButton) {
+        placeButton.addEventListener('click', generatePlace);
+    }
+
+    if (romanceButton) {
+        romanceButton.addEventListener('click', generateRomance);
+    }
+
+    setActiveMenu('npc');
+})();
