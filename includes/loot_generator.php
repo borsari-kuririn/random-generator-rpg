@@ -21,32 +21,32 @@ function rg_choose_item_pool(string $rarity): array
 {
     $pool = [
         'common' => [
-            ['name' => 'Pederneira de bolso', 'type' => 'Ferramenta', 'value' => '4 pratas', 'detail' => 'Ainda solta faiscas fortes.'],
-            ['name' => 'Anel de bronze riscado', 'type' => 'Adorno', 'value' => '6 pratas', 'detail' => 'Tem iniciais apagadas por dentro.'],
-            ['name' => 'Kit de agulha e linha', 'type' => 'Utilidade', 'value' => '3 pratas', 'detail' => 'Guardado em um estojo de osso.'],
-            ['name' => 'Mapa de rua dobrado', 'type' => 'Documento', 'value' => '2 pratas', 'detail' => 'Marca uma passagem curta entre becos.'],
-            ['name' => 'Frasco de pomada herbal', 'type' => 'Consumivel', 'value' => '5 pratas', 'detail' => 'Ajuda em cortes leves e queimaduras.'],
+            ['name' => 'Pocket flint striker', 'type' => 'Tool', 'value' => '4 silver', 'detail' => 'Still throws strong sparks.'],
+            ['name' => 'Scratched bronze ring', 'type' => 'Adornment', 'value' => '6 silver', 'detail' => 'Its inner initials are nearly erased.'],
+            ['name' => 'Needle and thread kit', 'type' => 'Utility', 'value' => '3 silver', 'detail' => 'Stored in a small bone case.'],
+            ['name' => 'Folded street map', 'type' => 'Document', 'value' => '2 silver', 'detail' => 'Marks a hidden shortcut through alleys.'],
+            ['name' => 'Herbal salve vial', 'type' => 'Consumable', 'value' => '5 silver', 'detail' => 'Useful for minor cuts and burns.'],
         ],
         'uncommon' => [
-            ['name' => 'Pingente da Lua Vaga', 'type' => 'Amuleto', 'value' => '18 pratas', 'detail' => 'Esfria quando magia e conjurada perto.'],
-            ['name' => 'Pergaminho de chave mestra', 'type' => 'Arcano', 'value' => '22 pratas', 'detail' => 'Concede vantagem em uma abertura de fechadura.'],
-            ['name' => 'Bolsa de moedas de fronteira', 'type' => 'Tesouro', 'value' => '17 pratas', 'detail' => 'Mistura de cunhagens de varios reinos.'],
-            ['name' => 'Adaga de osso entalhado', 'type' => 'Arma', 'value' => '21 pratas', 'detail' => 'Leve, equilibrada e com cabo de couro.'],
-            ['name' => 'Ampola de fogo alquimico fraco', 'type' => 'Consumivel', 'value' => '25 pratas', 'detail' => 'Inflama em contato com ar por alguns segundos.'],
+            ['name' => 'Waning Moon pendant', 'type' => 'Amulet', 'value' => '18 silver', 'detail' => 'Turns cold when magic is cast nearby.'],
+            ['name' => 'Master key scroll', 'type' => 'Arcane', 'value' => '22 silver', 'detail' => 'Grants advantage on one lockpicking attempt.'],
+            ['name' => 'Frontier coin pouch', 'type' => 'Treasure', 'value' => '17 silver', 'detail' => 'Contains mixed coinage from several realms.'],
+            ['name' => 'Carved bone dagger', 'type' => 'Weapon', 'value' => '21 silver', 'detail' => 'Lightweight, balanced, and leather-gripped.'],
+            ['name' => 'Weak alchemical fire ampoule', 'type' => 'Consumable', 'value' => '25 silver', 'detail' => 'Ignites on contact with air for a few seconds.'],
         ],
         'rare' => [
-            ['name' => 'Chave prismatica de prata', 'type' => 'Artefato menor', 'value' => '95 pratas', 'detail' => 'Brilha perto de portas secretas.'],
-            ['name' => 'Runa de comando militar', 'type' => 'Insignia', 'value' => '82 pratas', 'detail' => 'Abre cofres de quartel antigo.'],
-            ['name' => 'Anel de passo silencioso', 'type' => 'Magico', 'value' => '110 pratas', 'detail' => 'Abafa passos por alguns minutos por dia.'],
-            ['name' => 'Totem de escama draconica', 'type' => 'Relicario', 'value' => '120 pratas', 'detail' => 'Reage com calor quando monstros se aproximam.'],
-            ['name' => 'Frasco de nevoa engarrafada', 'type' => 'Consumivel magico', 'value' => '88 pratas', 'detail' => 'Cria cobertura espessa em um corredor curto.'],
+            ['name' => 'Prismatic silver key', 'type' => 'Minor artifact', 'value' => '95 silver', 'detail' => 'Glows near hidden doors.'],
+            ['name' => 'Military command rune', 'type' => 'Insignia', 'value' => '82 silver', 'detail' => 'Opens old barracks strongboxes.'],
+            ['name' => 'Silent-step ring', 'type' => 'Magical', 'value' => '110 silver', 'detail' => 'Muffles footsteps for a few minutes per day.'],
+            ['name' => 'Draconic scale totem', 'type' => 'Reliquary', 'value' => '120 silver', 'detail' => 'Warms up when monsters draw near.'],
+            ['name' => 'Bottled mist flask', 'type' => 'Magical consumable', 'value' => '88 silver', 'detail' => 'Creates dense cover in a short corridor.'],
         ],
         'legendary' => [
-            ['name' => 'Lagrima de Wyrm vitrificada', 'type' => 'Reliquia', 'value' => '1.300 pratas', 'detail' => 'Pode energizar um ritual ancestral.'],
-            ['name' => 'Selo do Trono Naufrago', 'type' => 'Insignia real', 'value' => '1.050 pratas', 'detail' => 'Reconhecido por casas nobres extintas.'],
-            ['name' => 'Peitoral de fio estelar', 'type' => 'Armadura ritual', 'value' => '1.600 pratas', 'detail' => 'Reflete luz como constelacoes em movimento.'],
-            ['name' => 'Ampulheta da Vigilia Eterna', 'type' => 'Artefato', 'value' => '1.420 pratas', 'detail' => 'Permite rever os ultimos segundos de um evento.'],
-            ['name' => 'Corneta do Primeiro Cerco', 'type' => 'Instrumento de guerra', 'value' => '1.200 pratas', 'detail' => 'Seu toque impone coragem em aliados.'],
+            ['name' => 'Vitrified wyrm tear', 'type' => 'Relic', 'value' => '1,300 silver', 'detail' => 'Can empower an ancient ritual.'],
+            ['name' => 'Sunken Throne seal', 'type' => 'Royal insignia', 'value' => '1,050 silver', 'detail' => 'Recognized by extinct noble houses.'],
+            ['name' => 'Star-thread breastplate', 'type' => 'Ritual armor', 'value' => '1,600 silver', 'detail' => 'Reflects light like moving constellations.'],
+            ['name' => 'Hourglass of Eternal Watch', 'type' => 'Artifact', 'value' => '1,420 silver', 'detail' => 'Lets you replay the last few seconds of an event.'],
+            ['name' => 'Horn of the First Siege', 'type' => 'War instrument', 'value' => '1,200 silver', 'detail' => 'Its call inspires courage in allies.'],
         ],
     ];
 
@@ -84,25 +84,25 @@ function rg_generate_loot(array $options = []): array
 
         $usedIndexes[$index] = true;
         $item = $itemPool[$index];
-        $item['condition'] = rg_pick(['Intacto', 'Gasto', 'Manchado', 'Bem preservado', 'Parcialmente quebrado']);
+        $item['condition'] = rg_pick(['Intact', 'Worn', 'Stained', 'Well-preserved', 'Partially broken']);
         $items[] = $item;
     }
 
     return [
         'source' => rg_capitalize_words($source),
         'rarity' => rg_capitalize_words($rarity),
-        'coins' => random_int($source === 'lair' ? 20 : 4, $source === 'lair' ? 180 : 55) . ' moedas de prata',
+        'coins' => random_int($source === 'lair' ? 20 : 4, $source === 'lair' ? 180 : 55) . ' silver coins',
         'items' => $items,
         'hook' => $source === 'lair'
             ? rg_pick([
-                'Uma das pecas traz o emblema de um culto esquecido.',
-                'Ha marcas recentes de troca de mercadoria no cova.',
-                'Um item aponta para um comprador na capital.',
+                'One of the items bears the emblem of a forgotten cult.',
+                'There are fresh signs of smuggling activity in this lair.',
+                'One item points to a buyer in the capital.',
             ])
             : rg_pick([
-                'O item mais valioso parece roubado de um templo local.',
-                'Um simbolo gravado conecta este saque a uma gangue urbana.',
-                'O dono original pode estar vivo e procurando por isso.',
+                'The most valuable item appears to be stolen from a local temple.',
+                'An engraved symbol links this loot to an urban gang.',
+                'The original owner may still be alive and looking for it.',
             ]),
     ];
 }

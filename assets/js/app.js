@@ -33,6 +33,13 @@
     var romanceStatus = document.querySelector('[data-romance-status]');
     var romancePartners = document.querySelector('[data-romance-partners]');
 
+    var companyButton = document.querySelector('[data-company-generate-button]');
+    var companySize = document.querySelector('[data-company-size]');
+    var companyKind = document.querySelector('[data-company-kind]');
+    var companyFocus = document.querySelector('[data-company-focus]');
+    var companyFields = document.querySelectorAll('[data-company-field]');
+    var companyStatus = document.querySelector('[data-company-status]');
+
     function setActiveMenu(target) {
         menuButtons.forEach(function (button) {
             var isCurrent = button.getAttribute('data-menu-target') === target;
@@ -52,7 +59,7 @@
         }
 
         npcButton.disabled = isLoading;
-        npcButton.textContent = isLoading ? 'Gerando...' : 'Gerar NPC';
+        npcButton.textContent = isLoading ? 'Generating...' : 'Generate NPC';
     }
 
     function renderNpc(npc) {
@@ -73,7 +80,7 @@
         }
 
         lootButton.disabled = isLoading;
-        lootButton.textContent = isLoading ? 'Gerando...' : 'Gerar Loot';
+        lootButton.textContent = isLoading ? 'Generating...' : 'Generate Loot';
     }
 
     function renderLoot(loot) {
@@ -96,7 +103,7 @@
             var meta = document.createElement('span');
             var detail = document.createElement('p');
 
-            title.textContent = item.name || 'Item desconhecido';
+            title.textContent = item.name || 'Unknown item';
             meta.textContent = (item.type || '-') + ' | ' + (item.condition || '-') + ' | ' + (item.value || '-');
             detail.textContent = item.detail || '';
 
@@ -113,7 +120,7 @@
         }
 
         placeButton.disabled = isLoading;
-        placeButton.textContent = isLoading ? 'Gerando...' : 'Gerar Lugar';
+        placeButton.textContent = isLoading ? 'Generating...' : 'Generate Place';
     }
 
     function renderPlace(place) {
@@ -132,7 +139,7 @@
         }
 
         romanceButton.disabled = isLoading;
-        romanceButton.textContent = isLoading ? 'Gerando...' : 'Gerar Par Romantico';
+        romanceButton.textContent = isLoading ? 'Generating...' : 'Generate Romantic Pair';
     }
 
     function renderRomance(romance) {
@@ -155,14 +162,33 @@
             var meta = document.createElement('span');
             var detail = document.createElement('p');
 
-            title.textContent = partner.name || 'Parceiro misterioso';
-            meta.textContent = (partner.gender || '-') + ' | prefere: ' + (partner.preference || '-');
-            detail.textContent = 'Estilo de roupa: ' + (partner.style || '-');
+            title.textContent = partner.name || 'Mysterious partner';
+            meta.textContent = (partner.gender || '-') + ' | prefers: ' + (partner.preference || '-');
+            detail.textContent = 'Clothing style: ' + (partner.style || '-');
 
             entry.appendChild(title);
             entry.appendChild(meta);
             entry.appendChild(detail);
             romancePartners.appendChild(entry);
+        });
+    }
+
+    function setCompanyLoading(isLoading) {
+        if (!companyButton) {
+            return;
+        }
+
+        companyButton.disabled = isLoading;
+        companyButton.textContent = isLoading ? 'Generating...' : 'Generate Company';
+    }
+
+    function renderCompany(company) {
+        companyFields.forEach(function (field) {
+            var key = field.getAttribute('data-company-field');
+            field.textContent = company[key] || '-';
+            field.classList.remove('flash');
+            void field.offsetWidth;
+            field.classList.add('flash');
         });
     }
 
@@ -181,7 +207,7 @@
         }
 
         setNpcLoading(true);
-        npcStatus.textContent = 'Invocando nomes, segredos e rumores...';
+        npcStatus.textContent = 'Invoking names, secrets, and rumors...';
 
         try {
             var race = raceFilter ? raceFilter.value.trim() : '';
@@ -207,18 +233,18 @@
             var response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
 
             if (!response.ok) {
-                throw new Error('Falha HTTP: ' + response.status);
+                throw new Error('HTTP failure: ' + response.status);
             }
 
             var data = await response.json();
             if (!data.ok || !data.npc) {
-                throw new Error('Resposta invalida do servidor.');
+                throw new Error('Invalid server response.');
             }
 
             renderNpc(data.npc);
-            npcStatus.textContent = 'NPC gerado com sucesso.';
+            npcStatus.textContent = 'NPC generated successfully.';
         } catch (error) {
-            npcStatus.textContent = 'Nao foi possivel gerar agora. Tente novamente.';
+            npcStatus.textContent = 'Could not generate right now. Please try again.';
             console.error(error);
         } finally {
             setNpcLoading(false);
@@ -227,7 +253,7 @@
 
     async function generateLoot() {
         setLootLoading(true);
-        lootStatus.textContent = 'Remexendo bolsos, baus e esconderijos...';
+        lootStatus.textContent = 'Searching pockets, chests, and hideouts...';
 
         try {
             var source = lootSource ? lootSource.value.trim() : '';
@@ -248,18 +274,18 @@
 
             var response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
             if (!response.ok) {
-                throw new Error('Falha HTTP: ' + response.status);
+                throw new Error('HTTP failure: ' + response.status);
             }
 
             var data = await response.json();
             if (!data.ok || !data.loot) {
-                throw new Error('Resposta invalida do servidor.');
+                throw new Error('Invalid server response.');
             }
 
             renderLoot(data.loot);
-            lootStatus.textContent = 'Loot gerado com sucesso.';
+            lootStatus.textContent = 'Loot generated successfully.';
         } catch (error) {
-            lootStatus.textContent = 'Nao foi possivel gerar loot agora. Tente novamente.';
+            lootStatus.textContent = 'Could not generate loot right now. Please try again.';
             console.error(error);
         } finally {
             setLootLoading(false);
@@ -268,7 +294,7 @@
 
     async function generatePlace() {
         setPlaceLoading(true);
-        placeStatus.textContent = 'Explorando corredores em ruinas...';
+        placeStatus.textContent = 'Exploring ruined corridors...';
 
         try {
             var type = placeType ? placeType.value.trim() : '';
@@ -289,18 +315,18 @@
 
             var response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
             if (!response.ok) {
-                throw new Error('Falha HTTP: ' + response.status);
+                throw new Error('HTTP failure: ' + response.status);
             }
 
             var data = await response.json();
             if (!data.ok || !data.place) {
-                throw new Error('Resposta invalida do servidor.');
+                throw new Error('Invalid server response.');
             }
 
             renderPlace(data.place);
-            placeStatus.textContent = 'Lugar gerado com sucesso.';
+            placeStatus.textContent = 'Place generated successfully.';
         } catch (error) {
-            placeStatus.textContent = 'Nao foi possivel gerar lugar agora. Tente novamente.';
+            placeStatus.textContent = 'Could not generate a place right now. Please try again.';
             console.error(error);
         } finally {
             setPlaceLoading(false);
@@ -309,7 +335,7 @@
 
     async function generateRomance() {
         setRomanceLoading(true);
-        romanceStatus.textContent = 'Tecendo destino e coracoes...';
+        romanceStatus.textContent = 'Weaving fate and hearts...';
 
         try {
             var tone = romanceTone ? romanceTone.value.trim() : '';
@@ -338,21 +364,66 @@
 
             var response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
             if (!response.ok) {
-                throw new Error('Falha HTTP: ' + response.status);
+                throw new Error('HTTP failure: ' + response.status);
             }
 
             var data = await response.json();
             if (!data.ok || !data.romance) {
-                throw new Error('Resposta invalida do servidor.');
+                throw new Error('Invalid server response.');
             }
 
             renderRomance(data.romance);
-            romanceStatus.textContent = 'Par romantico gerado com sucesso.';
+            romanceStatus.textContent = 'Romantic pair generated successfully.';
         } catch (error) {
-            romanceStatus.textContent = 'Nao foi possivel gerar par romantico agora. Tente novamente.';
+            romanceStatus.textContent = 'Could not generate a romantic pair right now. Please try again.';
             console.error(error);
         } finally {
             setRomanceLoading(false);
+        }
+    }
+
+    async function generateCompany() {
+        setCompanyLoading(true);
+        companyStatus.textContent = 'Drafting ledgers, charters, and sphere values...';
+
+        try {
+            var size = companySize ? companySize.value.trim() : '';
+            var kind = companyKind ? companyKind.value.trim() : '';
+            var focus = companyFocus ? companyFocus.value.trim() : '';
+            var params = [];
+
+            if (size) {
+                params.push('size=' + encodeURIComponent(size));
+            }
+            if (kind) {
+                params.push('kind=' + encodeURIComponent(kind));
+            }
+            if (focus) {
+                params.push('focus=' + encodeURIComponent(focus));
+            }
+
+            var url = 'api/generate_company.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
+            if (!response.ok) {
+                throw new Error('HTTP failure: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.company) {
+                throw new Error('Invalid server response.');
+            }
+
+            renderCompany(data.company);
+            companyStatus.textContent = 'Company generated successfully.';
+        } catch (error) {
+            companyStatus.textContent = 'Could not generate a company right now. Please try again.';
+            console.error(error);
+        } finally {
+            setCompanyLoading(false);
         }
     }
 
@@ -376,6 +447,10 @@
 
     if (romanceButton) {
         romanceButton.addEventListener('click', generateRomance);
+    }
+
+    if (companyButton) {
+        companyButton.addEventListener('click', generateCompany);
     }
 
     setActiveMenu('npc');

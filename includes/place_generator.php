@@ -15,14 +15,14 @@ function rg_get_place_options(): array
 function rg_place_label(string $value): string
 {
     $labels = [
-        'castle' => 'Castelo',
-        'fortress' => 'Fortaleza',
-        'tower' => 'Torre',
-        'keep' => 'Bastiao',
-        'sanctum' => 'Santuario',
-        'monster' => 'Monstros',
-        'remnants' => 'Habitantes remanescentes',
-        'mixed' => 'Monstros e remanescentes',
+        'castle' => 'Castle',
+        'fortress' => 'Fortress',
+        'tower' => 'Tower',
+        'keep' => 'Keep',
+        'sanctum' => 'Sanctum',
+        'monster' => 'Monsters',
+        'remnants' => 'Remaining inhabitants',
+        'mixed' => 'Monsters and remnants',
     ];
 
     return $labels[$value] ?? ucfirst($value);
@@ -30,13 +30,13 @@ function rg_place_label(string $value): string
 
 function rg_place_name(string $type): string
 {
-    $prefixes = ['Pedra', 'Bruma', 'Cinza', 'Ferro', 'Eco', 'Vigia', 'Luar', 'Corvo'];
+    $prefixes = ['Stone', 'Mist', 'Ash', 'Iron', 'Echo', 'Watch', 'Moon', 'Raven'];
     $suffixByType = [
-        'castle' => ['do Trono Oco', 'de Ravenhall', 'das Bandeiras Quebradas'],
-        'fortress' => ['do Dique Negro', 'das Sete Muralhas', 'do Passo Frio'],
-        'tower' => ['dos Sinos Mudos', 'da Vigia Perdida', 'da Lua Partida'],
-        'keep' => ['de Maralto', 'do Portao Velho', 'do Juramento Caiado'],
-        'sanctum' => ['do Coro Silente', 'das Chamas Frias', 'da Rosa de Sal'],
+        'castle' => ['of the Hollow Throne', 'of Ravenhall', 'of Broken Banners'],
+        'fortress' => ['of Black Dike', 'of the Seven Walls', 'of the Cold Pass'],
+        'tower' => ['of Silent Bells', 'of the Lost Watch', 'of the Broken Moon'],
+        'keep' => ['of High Tide', 'of the Old Gate', 'of the Chalk Oath'],
+        'sanctum' => ['of the Silent Choir', 'of Cold Flames', 'of the Salt Rose'],
     ];
 
     $suffixPool = $suffixByType[$type] ?? $suffixByType['castle'];
@@ -47,17 +47,17 @@ function rg_place_name(string $type): string
 function rg_build_place_history(string $type, string $creator, string $age, string $fall): string
 {
     $purposeByType = [
-        'castle' => 'sede de uma casa nobre fronteirica',
-        'fortress' => 'linha defensiva contra invasoes do norte',
-        'tower' => 'posto de observacao de rotas comerciais',
-        'keep' => 'quartel de elite para proteger uma passagem montanhosa',
-        'sanctum' => 'refugio ritual de uma ordem sacerdotal',
+        'castle' => 'seat of a frontier noble house',
+        'fortress' => 'defensive line against northern invasions',
+        'tower' => 'observation post over trade routes',
+        'keep' => 'elite garrison built to guard a mountain pass',
+        'sanctum' => 'ritual refuge of a priestly order',
     ];
 
     $purpose = $purposeByType[$type] ?? $purposeByType['castle'];
 
-    return 'Erguido por ' . $creator . ' ha ' . $age . ', o local servia como ' . $purpose . '. '
-        . 'A decadencia comecou quando ' . $fall . '.';
+    return 'Built by ' . $creator . ' around ' . $age . ' ago, this place served as a ' . $purpose . '. '
+        . 'Its decline began when ' . $fall . '.';
 }
 
 function rg_generate_place(array $options = []): array
@@ -75,52 +75,52 @@ function rg_generate_place(array $options = []): array
     $occupants = $selectedOccupants ?? rg_pick($placeOptions['occupants']);
 
     $creators = [
-        'a rainha Isolde de Marfim',
-        'o conclave dos Magos de Ferro',
-        'o general Torven na ultima guerra de sucessao',
-        'monges cartografos da Ordem do Farol',
-        'a casa Velkar antes de sua queda',
+        'Queen Isolde of Ivory',
+        'the Conclave of Iron Mages',
+        'General Torven during the last succession war',
+        'map-making monks of the Lighthouse Order',
+        'House Velkar before its fall',
     ];
 
-    $ages = ['120 anos', '240 anos', '370 anos', '500 anos', 'quase 700 anos'];
+    $ages = ['120 years', '240 years', '370 years', '500 years', 'nearly 700 years'];
     $fallReasons = [
-        'um cerco de tres invernos destruiu os celeiros',
-        'um pacto arcano saiu do controle no salao central',
-        'uma praga levou a maior parte da guarnicao',
-        'as minas da regiao secaram e o lugar perdeu importancia',
-        'a linhagem governante desapareceu sem herdeiros',
+        'a three-winter siege destroyed the granaries',
+        'an arcane pact spiraled out of control in the great hall',
+        'a plague wiped out most of the garrison',
+        'the region\'s mines dried up and the site lost strategic value',
+        'the ruling bloodline vanished without heirs',
     ];
 
     $monsterGroups = [
-        'ninho de aranhas de tumulo e suas crias albinas',
-        'matilha de lobos sombrios guiados por um alfa marcado',
-        'tropa de goblins ferreiros comandada por um capataz brutal',
-        'espectros de antigos sentinelas presos ao juramento',
-        'um ogro erudito que coleciona reliquias roubadas',
+        'a nest of tomb spiders and their albino brood',
+        'a pack of shadow wolves led by a scarred alpha',
+        'a troop of forge-goblins ruled by a brutal foreman',
+        'specters of old sentinels bound by oath',
+        'a scholarly ogre collecting stolen relics',
     ];
 
     $remnantGroups = [
-        'um pequeno culto de sobreviventes que protege arquivos antigos',
-        'desertores que transformaram o patio interno em mercado ilegal',
-        'familias de refugiados vivendo nas galerias secas',
-        'um punhado de monges que se recusa a abandonar o altar',
-        'cacadores de reliquias que ocupam as torres externas',
+        'a small survivor cult guarding old archives',
+        'deserters who turned the inner yard into a black market',
+        'refugee families living in the dry galleries',
+        'a handful of monks refusing to abandon the altar',
+        'relic hunters occupying the outer towers',
     ];
 
     $dangers = [
-        'armadilhas antigas ainda ativas nos corredores inferiores',
-        'corredores instaveis que podem ceder com peso excessivo',
-        'uma fenda arcana que distorce sons e distancia',
-        'pocos de agua contaminados por fungos luminosos',
-        'portas seladas por runas que disparam alarmes espectrais',
+        'ancient traps still active in the lower corridors',
+        'unstable hallways that may collapse under heavy weight',
+        'an arcane rift that distorts sound and distance',
+        'water pits contaminated by luminous fungi',
+        'rune-sealed doors that trigger spectral alarms',
     ];
 
     $treasures = [
-        'um cofre mural com mapas militares intactos',
-        'relicarios com selos de uma dinastia extinta',
-        'um observatorio com lentes de cristal raro',
-        'um arsenal com armamento antigo ainda funcional',
-        'um tomo de genealogias que prova antigas reivindicacoes',
+        'a wall-safe containing intact military maps',
+        'reliquaries bearing seals of an extinct dynasty',
+        'an observatory with rare crystal lenses',
+        'an arsenal with old but functional weapons',
+        'a genealogy tome proving ancient claims',
     ];
 
     $creator = rg_pick($creators);
@@ -134,24 +134,24 @@ function rg_generate_place(array $options = []): array
     } elseif ($occupants === 'remnants') {
         $occupantSummary = rg_pick($remnantGroups);
     } else {
-        $occupantSummary = rg_pick($monsterGroups) . '; alem disso, ' . rg_pick($remnantGroups);
+        $occupantSummary = rg_pick($monsterGroups) . '; in addition, ' . rg_pick($remnantGroups);
     }
 
     return [
         'name' => rg_place_name($type),
         'type' => rg_place_label($type),
-        'state' => 'Abandonado',
+        'state' => 'Abandoned',
         'occupants' => rg_place_label($occupants),
         'history' => rg_build_place_history($type, $creator, $age, $fall),
         'current_inhabitants' => $occupantSummary,
         'main_danger' => $danger,
         'notable_find' => rg_pick($treasures),
-        'adventure_hook' => 'Rumores dizem que ' . rg_pick([
-            'o salao principal ecoa vozes de antigos comandantes',
-            'uma passagem secreta liga o local a catacumbas proximas',
-            'ha um pacto incompleto escondido na sala do trono',
-            'o lider atual aceitaria negociar por provisoes e cura',
-            'quem controlar esse lugar domina as rotas da regiao',
+        'adventure_hook' => 'Rumors say that ' . rg_pick([
+            'the main hall echoes with voices of long-dead commanders',
+            'a hidden passage links the site to nearby catacombs',
+            'an unfinished pact is hidden inside the throne room',
+            'the current leader might negotiate for supplies and healing',
+            'whoever controls this place controls the region\'s routes',
         ]) . '.',
     ];
 }

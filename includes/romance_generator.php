@@ -9,20 +9,20 @@ function rg_get_romance_options(): array
     return [
         'tones' => ['sweet', 'tragic', 'forbidden', 'chaotic'],
         'drama_levels' => ['low', 'medium', 'high'],
-        'genders' => ['Mulher', 'Homem', 'Nao-binario'],
+        'genders' => ['Woman', 'Man', 'Non-binary'],
     ];
 }
 
 function rg_romance_label(string $value): string
 {
     $labels = [
-        'sweet' => 'Doce',
-        'tragic' => 'Tragico',
-        'forbidden' => 'Proibido',
-        'chaotic' => 'Caotico',
-        'low' => 'Baixo',
-        'medium' => 'Medio',
-        'high' => 'Alto',
+        'sweet' => 'Sweet',
+        'tragic' => 'Tragic',
+        'forbidden' => 'Forbidden',
+        'chaotic' => 'Chaotic',
+        'low' => 'Low',
+        'medium' => 'Medium',
+        'high' => 'High',
     ];
 
     return $labels[$value] ?? ucfirst($value);
@@ -31,36 +31,36 @@ function rg_romance_label(string $value): string
 function rg_romance_name_pool(string $gender): array
 {
     $pool = [
-        'Mulher' => ['Lysandra', 'Mirela', 'Talia', 'Serena', 'Iria', 'Calista', 'Ysolda'],
-        'Homem' => ['Darian', 'Kael', 'Lucien', 'Rhydan', 'Alaric', 'Marek', 'Silas'],
-        'Nao-binario' => ['Ari', 'Ren', 'Sage', 'Korin', 'Vale', 'Lior', 'Cyan'],
+        'Woman' => ['Lysandra', 'Mirela', 'Talia', 'Serena', 'Iria', 'Calista', 'Ysolda'],
+        'Man' => ['Darian', 'Kael', 'Lucien', 'Rhydan', 'Alaric', 'Marek', 'Silas'],
+        'Non-binary' => ['Ari', 'Ren', 'Sage', 'Korin', 'Vale', 'Lior', 'Cyan'],
     ];
 
-    return $pool[$gender] ?? $pool['Nao-binario'];
+    return $pool[$gender] ?? $pool['Non-binary'];
 }
 
 function rg_romance_preference_options_for_target(string $targetGender): array
 {
-    if ($targetGender === 'Mulher') {
-        return ['Mulheres', 'Mulheres e nao-binarios', 'Multiplos generos'];
+    if ($targetGender === 'Woman') {
+        return ['Women', 'Women and non-binary people', 'Multiple genders'];
     }
 
-    if ($targetGender === 'Homem') {
-        return ['Homens', 'Homens e nao-binarios', 'Multiplos generos'];
+    if ($targetGender === 'Man') {
+        return ['Men', 'Men and non-binary people', 'Multiple genders'];
     }
 
-    return ['Nao-binarios', 'Nao-binarios e mulheres', 'Nao-binarios e homens', 'Multiplos generos'];
+    return ['Non-binary people', 'Non-binary people and women', 'Non-binary people and men', 'Multiple genders'];
 }
 
 function rg_generate_partner(string $gender, string $preference): array
 {
     $styles = [
-        'casacos longos com detalhes de prata e couro escuro',
-        'trajes nobres reformados com remendos de viagem',
-        'roupas leves de estrada com capas impermeaveis',
-        'vestes rituais discretas com bordados antigos',
-        'armadura parcial sobre tecido elegante',
-        'roupas urbanas de corte refinado e cores profundas',
+        'long coats with silver details and dark leather',
+        'refitted noble attire patched for travel',
+        'light road clothes with weatherproof cloaks',
+        'subtle ritual garments with old embroidery',
+        'partial armor over elegant fabric',
+        'refined urban clothing in deep tones',
     ];
 
     return [
@@ -93,24 +93,24 @@ function rg_generate_romantic_pair(array $options = []): array
 
     $pairTemplates = [
         [
-            'a' => ['gender' => 'Mulher'],
-            'b' => ['gender' => 'Mulher'],
+            'a' => ['gender' => 'Woman'],
+            'b' => ['gender' => 'Woman'],
         ],
         [
-            'a' => ['gender' => 'Homem'],
-            'b' => ['gender' => 'Homem'],
+            'a' => ['gender' => 'Man'],
+            'b' => ['gender' => 'Man'],
         ],
         [
-            'a' => ['gender' => 'Mulher'],
-            'b' => ['gender' => 'Homem'],
+            'a' => ['gender' => 'Woman'],
+            'b' => ['gender' => 'Man'],
         ],
         [
-            'a' => ['gender' => 'Nao-binario'],
-            'b' => ['gender' => 'Mulher'],
+            'a' => ['gender' => 'Non-binary'],
+            'b' => ['gender' => 'Woman'],
         ],
         [
-            'a' => ['gender' => 'Nao-binario'],
-            'b' => ['gender' => 'Homem'],
+            'a' => ['gender' => 'Non-binary'],
+            'b' => ['gender' => 'Man'],
         ],
     ];
 
@@ -125,51 +125,51 @@ function rg_generate_romantic_pair(array $options = []): array
     $partnerB = rg_generate_partner($partnerBGender, $partnerBPreference);
 
     $relationStage = rg_pick([
-        'Apaixonados em segredo ha algumas luas.',
-        'Noivos sob pressao politica de duas casas rivais.',
-        'Ex-amantes tentando reconstruir confianca durante uma guerra.',
-        'Companheiros de jornada que descobriram o amor no caos.',
-        'Amor recente, intenso e cheio de promessas imprudentes.',
+        'Secretly in love for several moons.',
+        'Engaged under political pressure from two rival houses.',
+        'Former lovers trying to rebuild trust during a war.',
+        'Travel companions who found love in chaos.',
+        'A recent, intense romance full of reckless promises.',
     ]);
 
     $history = rg_pick([
-        'Eles se conheceram quando um salvou o outro durante uma emboscada na estrada imperial.',
-        'O casal nasceu em faccoes opostas e fugiu junto apos um acordo quebrado.',
-        'Um antigo baile de inverno uniu os dois por um juramento que nunca foi desfeito.',
-        'A relacao cresceu enquanto traduziam juntos um grimorio proibido.',
-        'Eles eram rivais em torneios de lancas ate uma tregua virar romance.',
+        'They met when one saved the other during an ambush on the imperial road.',
+        'The couple were born in opposing factions and fled together after a broken pact.',
+        'An old winter ball bound them with an oath that was never undone.',
+        'Their bond grew while translating a forbidden grimoire together.',
+        'They were rivals in lance tournaments until a truce became romance.',
     ]);
 
     $meetingHook = rg_pick([
-        'Os herois sao contratados para proteger o primeiro encontro publico do casal.',
-        'Um mensageiro pede ajuda para entregar cartas secretas entre os amantes.',
-        'O casal oferece recompensa para escapar de perseguidores antes do amanhecer.',
-        'Uma das partes desaparece na noite anterior ao reencontro marcado.',
-        'Os personagens entram no meio de uma fuga romantica atravessando fronteiras.',
+        'The heroes are hired to protect the couple\'s first public meeting.',
+        'A messenger asks for help delivering secret letters between the lovers.',
+        'The couple offers a reward to escape pursuers before dawn.',
+        'One of them vanishes the night before their planned reunion.',
+        'The party gets caught in the middle of a romantic escape across borders.',
     ]);
 
     $likes = rg_pick([
-        'flores raras de inverno, joias antigas e poesias copiadas a mao',
-        'facas artesanais, chocolate amargo e mapas desenhados sob medida',
-        'musica ao vivo, perfumes de cedro e livros de historia perdida',
-        'amuleto de prata, vinho de especiarias e cartas bem escritas',
-        'tecidos finos, miniaturas de navios e selos de viagem',
+        'rare winter flowers, antique jewelry, and hand-copied poetry',
+        'handmade blades, dark chocolate, and custom-drawn maps',
+        'live music, cedar perfume, and books about lost history',
+        'silver charms, spiced wine, and well-written letters',
+        'fine fabrics, miniature ships, and travel seals',
     ]);
 
     $dislikes = rg_pick([
-        'presentes muito caros usados para manipulacao',
-        'animais empalhados, trofeus de cacada e perfumes muito doces',
-        'promessas vazias em publico e objetos ligados a familias rivais',
-        'presentes roubados de templos e reliquias profanadas',
-        'qualquer item que lembre antigos noivados forcados',
+        'overly expensive gifts used for manipulation',
+        'taxidermy, hunting trophies, and overly sweet perfumes',
+        'public empty promises and items tied to rival families',
+        'gifts stolen from temples and desecrated relics',
+        'anything that recalls old forced engagements',
     ]);
 
     $deathScenes = [
-        'Durante o cerco final, um deles se sacrifica para fechar o portao e salvar o outro.',
-        'Um duelo ritual exige sangue: o sobrevivente carrega o anel do casal como juramento.',
-        'Ao impedir a invocacao de um demonio, um amante cai no abismo da torre.',
-        'Uma doenca magica avanca rapido e so ha cura para uma pessoa.',
-        'Na fuga por tuneis em colapso, um decide ficar para segurar os escombros.',
+        'During the final siege, one sacrifices themselves to close the gate and save the other.',
+        'A ritual duel demands blood: the survivor carries the couple\'s ring as an oath.',
+        'While stopping a demon summoning, one lover falls into the tower abyss.',
+        'A magical illness spreads fast, and there is only enough cure for one person.',
+        'During an escape through collapsing tunnels, one stays behind to hold the debris.',
     ];
 
     $deathChanceByDrama = [
@@ -179,7 +179,7 @@ function rg_generate_romantic_pair(array $options = []): array
     ];
 
     return [
-        'title' => 'Par romantico: ' . $partnerA['name'] . ' e ' . $partnerB['name'],
+        'title' => 'Romantic Pair: ' . $partnerA['name'] . ' and ' . $partnerB['name'],
         'tone' => rg_romance_label($tone),
         'drama' => rg_romance_label($drama),
         'history' => $history,
