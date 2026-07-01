@@ -24,7 +24,7 @@ $company = rg_generate_company();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wyrm Ledger | RPG Generators</title>
+    <title>Solomons Ledger | RPG Generators</title>
     <meta name="description" content="NPC, loot, abandoned place, romantic pair, and company generators for fantasy campaigns.">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -32,7 +32,7 @@ $company = rg_generate_company();
     <main class="page">
         <header class="hero">
             <p class="kicker">Chronicles Workshop</p>
-            <h1>Wyrm Ledger Generators</h1>
+            <h1>Solomons Ledger Generators</h1>
             <p class="subtitle">
                 Switch between NPC, loot, place, romantic pair, and company generators to build fantasy encounters faster.
             </p>
