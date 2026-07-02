@@ -7,17 +7,20 @@ require_once __DIR__ . '/includes/loot_generator.php';
 require_once __DIR__ . '/includes/place_generator.php';
 require_once __DIR__ . '/includes/romance_generator.php';
 require_once __DIR__ . '/includes/company_generator.php';
+require_once __DIR__ . '/includes/encounter_generator.php';
 
 $generatorOptions = rg_get_generator_options();
 $lootOptions = rg_get_loot_options();
 $placeOptions = rg_get_place_options();
 $romanceOptions = rg_get_romance_options();
 $companyOptions = rg_get_company_options();
+$encounterOptions = rg_get_encounter_options();
 $npc = rg_generate_npc();
 $loot = rg_generate_loot();
 $place = rg_generate_place();
 $romance = rg_generate_romantic_pair();
 $company = rg_generate_company();
+$encounter = rg_generate_encounter();
 ?>
 <!doctype html>
 <html lang="en">
@@ -44,6 +47,7 @@ $company = rg_generate_company();
             <button type="button" class="menu-button" data-menu-target="place" aria-pressed="false">Place Generator</button>
             <button type="button" class="menu-button" data-menu-target="romance" aria-pressed="false">Romantic Pair Generator</button>
             <button type="button" class="menu-button" data-menu-target="company" aria-pressed="false">Company Generator</button>
+            <button type="button" class="menu-button" data-menu-target="encounter" aria-pressed="false">Encounter Generator</button>
         </nav>
 
         <section class="panel" data-generator-panel="npc" aria-live="polite">
@@ -490,6 +494,85 @@ $company = rg_generate_company();
                     <div class="item">
                         <strong>Adventure hook</strong>
                         <p class="value" data-company-field="hook"><?php echo htmlspecialchars($company['hook'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <section class="panel is-hidden" data-generator-panel="encounter" aria-live="polite">
+            <div class="controls">
+                <div class="filters filters-two">
+                    <label class="field">
+                        <span>Category</span>
+                        <select data-encounter-category>
+                            <option value="">Any</option>
+                            <?php foreach ($encounterOptions['categories'] as $catOption): ?>
+                                <option value="<?php echo htmlspecialchars($catOption, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars(ucfirst($catOption), ENT_QUOTES, 'UTF-8'); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button type="button" data-encounter-generate-button>Generate Encounter</button>
+                    <p class="status" data-encounter-status>Ready to populate the wilds.</p>
+                </div>
+            </div>
+
+            <article class="card">
+                <h2 class="card-title" data-encounter-field="name"><?php echo htmlspecialchars($encounter['name'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                <div class="grid">
+                    <div class="item">
+                        <strong>Category</strong>
+                        <p class="value" data-encounter-field="category"><?php echo htmlspecialchars($encounter['category'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Count</strong>
+                        <p class="value" data-encounter-field="count"><?php echo htmlspecialchars($encounter['count'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Strength</strong>
+                        <p class="value" data-encounter-field="strength"><?php echo htmlspecialchars($encounter['strength'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Agility</strong>
+                        <p class="value" data-encounter-field="agility"><?php echo htmlspecialchars($encounter['agility'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Skills</strong>
+                        <p class="value" data-encounter-field="skills"><?php echo htmlspecialchars($encounter['skills'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Movement</strong>
+                        <p class="value" data-encounter-field="movement"><?php echo htmlspecialchars($encounter['movement'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Weapon</strong>
+                        <p class="value" data-encounter-field="weapon"><?php echo htmlspecialchars($encounter['weapon'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Damage</strong>
+                        <p class="value" data-encounter-field="damage"><?php echo htmlspecialchars($encounter['damage'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Damage type</strong>
+                        <p class="value" data-encounter-field="damage_type"><?php echo htmlspecialchars($encounter['damage_type'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Special ability</strong>
+                        <p class="value" data-encounter-field="special"><?php echo htmlspecialchars($encounter['special'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Terrain</strong>
+                        <p class="value" data-encounter-field="terrain"><?php echo htmlspecialchars($encounter['terrain'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Time</strong>
+                        <p class="value" data-encounter-field="time"><?php echo htmlspecialchars($encounter['time'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Encounter hook</strong>
+                        <p class="value" data-encounter-field="hook"><?php echo htmlspecialchars($encounter['hook'], ENT_QUOTES, 'UTF-8'); ?></p>
                     </div>
                 </div>
             </article>

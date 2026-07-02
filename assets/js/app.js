@@ -40,6 +40,11 @@
     var companyFields = document.querySelectorAll('[data-company-field]');
     var companyStatus = document.querySelector('[data-company-status]');
 
+    var encounterButton = document.querySelector('[data-encounter-generate-button]');
+    var encounterCategory = document.querySelector('[data-encounter-category]');
+    var encounterFields = document.querySelectorAll('[data-encounter-field]');
+    var encounterStatus = document.querySelector('[data-encounter-status]');
+
     function setActiveMenu(target) {
         menuButtons.forEach(function (button) {
             var isCurrent = button.getAttribute('data-menu-target') === target;
@@ -171,6 +176,62 @@
             entry.appendChild(detail);
             romancePartners.appendChild(entry);
         });
+    }
+
+    function setEncounterLoading(isLoading) {
+        if (!encounterButton) {
+            return;
+        }
+
+        encounterButton.disabled = isLoading;
+        encounterButton.textContent = isLoading ? 'Generating...' : 'Generate Encounter';
+    }
+
+    function renderEncounter(encounter) {
+        encounterFields.forEach(function (field) {
+            var key = field.getAttribute('data-encounter-field');
+            field.textContent = encounter[key] || '-';
+            field.classList.remove('flash');
+            void field.offsetWidth;
+            field.classList.add('flash');
+        });
+    }
+
+    async function generateEncounter() {
+        setEncounterLoading(true);
+        encounterStatus.textContent = 'Scanning the wilds for threats...';
+
+        try {
+            var category = encounterCategory ? encounterCategory.value.trim() : '';
+            var params = [];
+
+            if (category) {
+                params.push('category=' + encodeURIComponent(category));
+            }
+
+            var url = 'api/generate_encounter.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
+            if (!response.ok) {
+                throw new Error('HTTP failure: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.encounter) {
+                throw new Error('Invalid server response.');
+            }
+
+            renderEncounter(data.encounter);
+            encounterStatus.textContent = 'Encounter generated successfully.';
+        } catch (error) {
+            encounterStatus.textContent = 'Could not generate an encounter right now. Please try again.';
+            console.error(error);
+        } finally {
+            setEncounterLoading(false);
+        }
     }
 
     function setCompanyLoading(isLoading) {
@@ -451,6 +512,10 @@
 
     if (companyButton) {
         companyButton.addEventListener('click', generateCompany);
+    }
+
+    if (encounterButton) {
+        encounterButton.addEventListener('click', generateEncounter);
     }
 
     setActiveMenu('npc');
