@@ -8,6 +8,7 @@ require_once __DIR__ . '/includes/place_generator.php';
 require_once __DIR__ . '/includes/romance_generator.php';
 require_once __DIR__ . '/includes/company_generator.php';
 require_once __DIR__ . '/includes/encounter_generator.php';
+require_once __DIR__ . '/includes/critical_injuries.php';
 
 $generatorOptions = rg_get_generator_options();
 $lootOptions = rg_get_loot_options();
@@ -29,7 +30,8 @@ $encounter = rg_generate_encounter();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Solomons Ledger | RPG Generators</title>
     <meta name="description" content="NPC, loot, abandoned place, romantic pair, and company generators for fantasy campaigns.">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=3">
+    <link rel="stylesheet" href="assets/css/critical-injuries.css?v=3">
 </head>
 <body>
     <main class="page">
@@ -48,6 +50,7 @@ $encounter = rg_generate_encounter();
             <button type="button" class="menu-button" data-menu-target="romance" aria-pressed="false">Romantic Pair Generator</button>
             <button type="button" class="menu-button" data-menu-target="company" aria-pressed="false">Company Generator</button>
             <button type="button" class="menu-button" data-menu-target="encounter" aria-pressed="false">Encounter Generator</button>
+            <button type="button" class="menu-button" data-menu-target="critical-injury" aria-pressed="false">Critical Injury Lookup</button>
         </nav>
 
         <section class="panel" data-generator-panel="npc" aria-live="polite">
@@ -578,9 +581,77 @@ $encounter = rg_generate_encounter();
             </article>
         </section>
 
+        <section class="panel is-hidden" data-generator-panel="critical-injury" aria-live="polite">
+            <div class="controls">
+                <div class="filters">
+                    <label class="field">
+                        <span>Damage Type</span>
+                        <select data-critical-injury-category>
+                            <option value="stab">Stab Wounds</option>
+                            <option value="slash">Slash Wounds</option>
+                            <option value="blunt">Blunt Force</option>
+                            <option value="horror">Horror</option>
+                            <option value="others">Others</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="dice-roll">
+                    <label class="field">
+                        <span>First D6 (Tens)</span>
+                        <input type="number" min="1" max="6" value="1" data-critical-injury-dice1 class="dice-input">
+                    </label>
+                    <label class="field">
+                        <span>Second D6 (Ones)</span>
+                        <input type="number" min="1" max="6" value="1" data-critical-injury-dice2 class="dice-input">
+                    </label>
+                    <div class="result">
+                        <strong>D66 Result:</strong>
+                        <span class="dice-value" data-critical-injury-result>11</span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" data-critical-injury-lookup-button>Look Up Injury</button>
+                    <p class="status" data-critical-injury-status>Roll the dice to find your injury.</p>
+                </div>
+            </div>
+
+            <article class="card">
+                <h2 class="card-title" data-critical-injury-field="injury">-</h2>
+                <div class="grid">
+                    <div class="item">
+                        <strong>Damage Type</strong>
+                        <p class="value" data-critical-injury-field="category">-</p>
+                    </div>
+                    <div class="item">
+                        <strong>D66 Value</strong>
+                        <p class="value" data-critical-injury-field="dice_roll">-</p>
+                    </div>
+                    <div class="item">
+                        <strong>Lethal</strong>
+                        <p class="value" data-critical-injury-field="lethal">-</p>
+                    </div>
+                    <div class="item">
+                        <strong>Time Limit</strong>
+                        <p class="value" data-critical-injury-field="time_limit">-</p>
+                    </div>
+                    <div class="item">
+                        <strong>Effects During Healing</strong>
+                        <p class="value" data-critical-injury-field="effects">-</p>
+                    </div>
+                    <div class="item">
+                        <strong>Healing Time</strong>
+                        <p class="value" data-critical-injury-field="healing_time">-</p>
+                    </div>
+                </div>
+            </article>
+        </section>
+
         <p class="footer">Original material inspired by classic fantasy. No official content was copied.</p>
     </main>
 
     <script src="assets/js/app.js" defer></script>
+    <script src="assets/js/critical-injuries.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Critical Injury API Test</title>
+    <style>
+        body { font-family: monospace; background: #1a1a1a; color: #eee; padding: 20px; }
+        .test { margin: 20px 0; padding: 10px; border: 1px solid #444; background: #0a0a0a; }
+        button { padding: 10px 20px; cursor: pointer; }
+        pre { background: #222; padding: 10px; overflow: auto; max-height: 300px; }
+    </style>
+</head>
+<body>
+    <h1>Critical Injury API Test</h1>
+    
+    <div class="test">
+        <h3>Test 1: Stab D66=11</h3>
+        <button onclick="testAPI('stab', 1, 1)">Run Test</button>
+        <pre id="result1"></pre>
+    </div>
+
+    <div class="test">
+        <h3>Test 2: Slash D66=23</h3>
+        <button onclick="testAPI('slash', 2, 3)">Run Test</button>
+        <pre id="result2"></pre>
+    </div>
+
+    <div class="test">
+        <h3>Test 3: Blunt D66=45</h3>
+        <button onclick="testAPI('blunt', 4, 5)">Run Test</button>
+        <pre id="result3"></pre>
+    </div>
+
+    <div class="test">
+        <h3>Test 4: Horror D66=52</h3>
+        <button onclick="testAPI('horror', 5, 2)">Run Test</button>
+        <pre id="result4"></pre>
+    </div>
+
+    <script>
+        async function testAPI(category, dice1, dice2) {
+            const resultId = `result${category === 'stab' ? 1 : category === 'slash' ? 2 : category === 'blunt' ? 3 : 4}`;
+            const element = document.getElementById(resultId);
+            element.textContent = 'Loading...';
+
+            try {
+                const url = `/api/critical_injury.php?category=${category}&dice1=${dice1}&dice2=${dice2}`;
+                console.log('Fetching:', url);
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                element.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                element.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
