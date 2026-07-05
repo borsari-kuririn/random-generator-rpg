@@ -159,7 +159,7 @@ $encounter = rg_generate_encounter();
 
         <section class="panel is-hidden" data-generator-panel="loot" aria-live="polite">
             <div class="controls">
-                <div class="filters filters-two">
+                <div class="filters">
                     <label class="field">
                         <span>Loot source</span>
                         <select data-loot-source>
@@ -176,6 +176,18 @@ $encounter = rg_generate_encounter();
                             <?php foreach ($lootOptions['rarities'] as $rarityOption): ?>
                                 <option value="<?php echo htmlspecialchars($rarityOption, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars(ucfirst($rarityOption), ENT_QUOTES, 'UTF-8'); ?></option>
                             <?php endforeach; ?>
+                        </select>
+                    </label>
+                    <label class="field">
+                        <span>Item type</span>
+                        <select data-loot-category>
+                            <option value="">Any</option>
+                            <option value="Trade Goods">Trade Goods</option>
+                            <option value="Weapons">Weapons</option>
+                            <option value="Tools">Tools</option>
+                            <option value="Armor">Armor</option>
+                            <option value="Clothes">Clothes</option>
+                            <option value="Shields">Shields</option>
                         </select>
                     </label>
                 </div>
@@ -650,8 +662,8 @@ $encounter = rg_generate_encounter();
         </p>
     </main>
 
-    <script src="assets/js/app.js" defer></script>
-    <script src="assets/js/critical-injuries.js" defer></script>
+    <script src="assets/js/app.js?v=3" defer></script>
+    <script src="assets/js/critical-injuries.js?v=3" defer></script>
     <script>
         // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');

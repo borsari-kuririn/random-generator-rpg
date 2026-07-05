@@ -8,10 +8,12 @@ header('Content-Type: application/json; charset=utf-8');
 
 $source = isset($_GET['source']) && is_string($_GET['source']) ? trim($_GET['source']) : '';
 $rarity = isset($_GET['rarity']) && is_string($_GET['rarity']) ? trim($_GET['rarity']) : '';
+$category = isset($_GET['category']) && is_string($_GET['category']) ? trim($_GET['category']) : '';
 
 $loot = rg_generate_loot([
     'source' => $source,
     'rarity' => $rarity,
+    'category' => $category,
 ]);
 
 echo json_encode([
