@@ -34,15 +34,8 @@ $encounter = rg_generate_encounter();
     <link rel="stylesheet" href="assets/css/critical-injuries.css?v=3">
 </head>
 <body>
-    <main class="page">
-        <header class="hero">
-            <p class="kicker">Chronicles Workshop</p>
-            <h1>Solomons Ledger Generators</h1>
-            <p class="subtitle">
-                Switch between NPC, loot, place, romantic pair, and company generators to build fantasy encounters faster.
-            </p>
-        </header>
-
+    <header class="top-header">
+        <h1 class="header-title">Solomons Ledger Generators</h1>
         <nav class="generator-menu" aria-label="Generator menu">
             <button type="button" class="menu-button is-active" data-menu-target="npc" aria-pressed="true">NPC Generator</button>
             <button type="button" class="menu-button" data-menu-target="loot" aria-pressed="false">Loot Generator</button>
@@ -52,7 +45,10 @@ $encounter = rg_generate_encounter();
             <button type="button" class="menu-button" data-menu-target="encounter" aria-pressed="false">Encounter Generator</button>
             <button type="button" class="menu-button" data-menu-target="critical-injury" aria-pressed="false">Critical Injury Lookup</button>
         </nav>
+        <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+    </header>
 
+    <main class="page">
         <section class="panel" data-generator-panel="npc" aria-live="polite">
             <div class="controls">
                 <div class="levels">
@@ -648,10 +644,37 @@ $encounter = rg_generate_encounter();
             </article>
         </section>
 
-        <p class="footer">Original material inspired by classic fantasy. No official content was copied.</p>
+        <p class="footer">
+            Original material inspired by classic fantasy. No official content was copied.<br>
+            All content rights belong to Free League, creator of Forbidden Lands RPG.
+        </p>
     </main>
 
     <script src="assets/js/app.js" defer></script>
     <script src="assets/js/critical-injuries.js" defer></script>
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const body = document.body;
+        
+        // Check for saved theme preference or default to 'dark'
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.add('light-theme');
+            themeToggle.textContent = '☀️';
+        } else {
+            body.classList.remove('light-theme');
+            themeToggle.textContent = '🌙';
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-theme');
+            const isLight = body.classList.contains('light-theme');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeToggle.textContent = isLight ? '☀️' : '🌙';
+        });
+    </script>
 </body>
 </html>
