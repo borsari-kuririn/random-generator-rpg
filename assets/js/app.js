@@ -1,1 +1,650 @@
-﻿(function (){var menuButtons = document.querySelectorAll('[data-menu-target]');var panels = document.querySelectorAll('[data-generator-panel]');var npcButton = document.querySelector('[data-npc-generate-button]');var minInput = document.querySelector('[data-level-min]');var maxInput = document.querySelector('[data-level-max]');var raceFilter = document.querySelector('[data-filter-race]');var classFilter = document.querySelector('[data-filter-class]');var cultureFilter = document.querySelector('[data-filter-culture]');var npcFields = document.querySelectorAll('[data-npc-field]');var npcStatus = document.querySelector('[data-npc-status]');var lootButton = document.querySelector('[data-loot-generate-button]');var lootSource = document.querySelector('[data-loot-source]');var lootRarity = document.querySelector('[data-loot-rarity]');var lootCategory = document.querySelector('[data-loot-category]');var lootFields = document.querySelectorAll('[data-loot-field]');var lootStatus = document.querySelector('[data-loot-status]');var lootItems = document.querySelector('[data-loot-items]');var placeButton = document.querySelector('[data-place-generate-button]');var placeType = document.querySelector('[data-place-type]');var placeOccupants = document.querySelector('[data-place-occupants]');var placeFields = document.querySelectorAll('[data-place-field]');var placeStatus = document.querySelector('[data-place-status]');var romanceButton = document.querySelector('[data-romance-generate-button]');var romanceTone = document.querySelector('[data-romance-tone]');var romanceDrama = document.querySelector('[data-romance-drama]');var romanceGenderA = document.querySelector('[data-romance-gender-a]');var romanceGenderB = document.querySelector('[data-romance-gender-b]');var romanceFields = document.querySelectorAll('[data-romance-field]');var romanceStatus = document.querySelector('[data-romance-status]');var romancePartners = document.querySelector('[data-romance-partners]');var companyButton = document.querySelector('[data-company-generate-button]');var companySize = document.querySelector('[data-company-size]');var companyKind = document.querySelector('[data-company-kind]');var companyFocus = document.querySelector('[data-company-focus]');var companyFields = document.querySelectorAll('[data-company-field]');var companyStatus = document.querySelector('[data-company-status]');var encounterButton = document.querySelector('[data-encounter-generate-button]');var encounterCategory = document.querySelector('[data-encounter-category]');var encounterFields = document.querySelectorAll('[data-encounter-field]');var encounterStatus = document.querySelector('[data-encounter-status]');function setActiveMenu(target){menuButtons.forEach(function (button){var isCurrent = button.getAttribute('data-menu-target') === target;button.classList.toggle('is-active',isCurrent);button.setAttribute('aria-pressed',isCurrent ? 'true' : 'false');});panels.forEach(function (panel){var isCurrent = panel.getAttribute('data-generator-panel') === target;panel.classList.toggle('is-hidden',!isCurrent);});}function setNpcLoading(isLoading){if (!npcButton){return;}npcButton.disabled = isLoading;npcButton.textContent = isLoading ? 'Generating...' : 'Generate NPC';}function renderNpc(npc){npcFields.forEach(function (field){var key = field.getAttribute('data-npc-field');field.textContent = npc[key] || '-';field.classList.remove('flash');void field.offsetWidth;field.classList.add('flash');});}function setLootLoading(isLoading){if (!lootButton){return;}lootButton.disabled = isLoading;lootButton.textContent = isLoading ? 'Generating...' : 'Generate Loot';}function renderLoot(loot){lootFields.forEach(function (field){var key = field.getAttribute('data-loot-field');field.textContent = loot[key] || '-';field.classList.remove('flash');void field.offsetWidth;field.classList.add('flash');});if (!lootItems){return;}lootItems.innerHTML = '';(loot.items || []).forEach(function (item){var entry = document.createElement('li');var title = document.createElement('strong');var meta = document.createElement('span');var detail = document.createElement('p');title.textContent = item.name || 'Unknown item';meta.textContent = (item.type || '-') + ' | ' + (item.condition || '-') + ' | ' + (item.value || '-');detail.textContent = item.detail || '';entry.appendChild(title);entry.appendChild(meta);entry.appendChild(detail);lootItems.appendChild(entry);});}function setPlaceLoading(isLoading){if (!placeButton){return;}placeButton.disabled = isLoading;placeButton.textContent = isLoading ? 'Generating...' : 'Generate Place';}function renderPlace(place){placeFields.forEach(function (field){var key = field.getAttribute('data-place-field');field.textContent = place[key] || '-';field.classList.remove('flash');void field.offsetWidth;field.classList.add('flash');});}function setRomanceLoading(isLoading){if (!romanceButton){return;}romanceButton.disabled = isLoading;romanceButton.textContent = isLoading ? 'Generating...' : 'Generate Romantic Pair';}function renderRomance(romance){romanceFields.forEach(function (field){var key = field.getAttribute('data-romance-field');field.textContent = romance[key] || '-';field.classList.remove('flash');void field.offsetWidth;field.classList.add('flash');});if (!romancePartners){return;}romancePartners.innerHTML = '';(romance.partners || []).forEach(function (partner){var entry = document.createElement('li');var title = document.createElement('strong');var meta = document.createElement('span');var detail = document.createElement('p');title.textContent = partner.name || 'Mysterious partner';meta.textContent = (partner.gender || '-') + ' | prefers: ' + (partner.preference || '-');detail.textContent = 'Clothing style: ' + (partner.style || '-');entry.appendChild(title);entry.appendChild(meta);entry.appendChild(detail);romancePartners.appendChild(entry);});}function setEncounterLoading(isLoading){if (!encounterButton){return;}encounterButton.disabled = isLoading;encounterButton.textContent = isLoading ? 'Generating...' : 'Generate Encounter';}function renderEncounter(encounter){encounterFields.forEach(function (field){var key = field.getAttribute('data-encounter-field');field.textContent = encounter[key] || '-';field.classList.remove('flash');void field.offsetWidth;field.classList.add('flash');});}async function generateEncounter(){setEncounterLoading(true);encounterStatus.textContent = 'Scanning the wilds for threats...';try{var category = encounterCategory ? encounterCategory.value.trim() : '';var params = [];if (category){params.push('category=' + encodeURIComponent(category));}var url = 'api/generate_encounter.php';if (params.length > 0){url += '?' + params.join('&');}var response = await fetch(url,{method: 'GET',headers:{'Accept': 'application/json'}});if (!response.ok){throw new Error('HTTP failure: ' + response.status);}var data = await response.json();if (!data.ok || !data.encounter){throw new Error('Invalid server response.');}renderEncounter(data.encounter);encounterStatus.textContent = 'Encounter generated successfully.';}catch (error){encounterStatus.textContent = 'Could not generate an encounter right now. Please try again.';console.error(error);}finally{setEncounterLoading(false);}}function setCompanyLoading(isLoading){if (!companyButton){return;}companyButton.disabled = isLoading;companyButton.textContent = isLoading ? 'Generating...' : 'Generate Company';}function renderCompany(company){companyFields.forEach(function (field){var key = field.getAttribute('data-company-field');field.textContent = company[key] || '-';field.classList.remove('flash');void field.offsetWidth;field.classList.add('flash');});}async function generateNpc(){var min = Number(minInput ? minInput.value : 1) || 1;var max = Number(maxInput ? maxInput.value : 12) || 12;if (min < 1){min = 1;}if (max < min){max = min;if (maxInput){maxInput.value = String(max);}}setNpcLoading(true);npcStatus.textContent = 'Invoking names,secrets,and rumors...';try{var race = raceFilter ? raceFilter.value.trim() : '';var playerClass = classFilter ? classFilter.value.trim() : '';var culture = cultureFilter ? cultureFilter.value.trim() : '';var params = [ 'level_min=' + encodeURIComponent(min),'level_max=' + encodeURIComponent(max),];if (race){params.push('race=' + encodeURIComponent(race));}if (playerClass){params.push('class=' + encodeURIComponent(playerClass));}if (culture){params.push('culture=' + encodeURIComponent(culture));}var url = 'api/generate_npc.php?' + params.join('&');var response = await fetch(url,{method: 'GET',headers:{'Accept': 'application/json'}});if (!response.ok){throw new Error('HTTP failure: ' + response.status);}var data = await response.json();if (!data.ok || !data.npc){throw new Error('Invalid server response.');}renderNpc(data.npc);npcStatus.textContent = 'NPC generated successfully.';}catch (error){npcStatus.textContent = 'Could not generate right now. Please try again.';console.error(error);}finally{setNpcLoading(false);}}async function generateLoot(){setLootLoading(true);lootStatus.textContent = 'Searching pockets,chests,and hideouts...';try{var source = lootSource ? lootSource.value.trim() : '';var rarity = lootRarity ? lootRarity.value.trim() : '';var category = lootCategory ? lootCategory.value.trim() : '';var params = [];if (source){params.push('source=' + encodeURIComponent(source));}if (rarity){params.push('rarity=' + encodeURIComponent(rarity));}if (category){params.push('category=' + encodeURIComponent(category));}var url = 'api/generate_loot.php';if (params.length > 0){url += '?' + params.join('&');}var response = await fetch(url,{method: 'GET',headers:{'Accept': 'application/json'}});if (!response.ok){throw new Error('HTTP failure: ' + response.status);}var data = await response.json();if (!data.ok || !data.loot){throw new Error('Invalid server response.');}renderLoot(data.loot);lootStatus.textContent = 'Loot generated successfully.';}catch (error){lootStatus.textContent = 'Could not generate loot right now. Please try again.';console.error(error);}finally{setLootLoading(false);}}async function generatePlace(){setPlaceLoading(true);placeStatus.textContent = 'Exploring ruined corridors...';try{var type = placeType ? placeType.value.trim() : '';var occupants = placeOccupants ? placeOccupants.value.trim() : '';var params = [];if (type){params.push('type=' + encodeURIComponent(type));}if (occupants){params.push('occupants=' + encodeURIComponent(occupants));}var url = 'api/generate_place.php';if (params.length > 0){url += '?' + params.join('&');}var response = await fetch(url,{method: 'GET',headers:{'Accept': 'application/json'}});if (!response.ok){throw new Error('HTTP failure: ' + response.status);}var data = await response.json();if (!data.ok || !data.place){throw new Error('Invalid server response.');}renderPlace(data.place);placeStatus.textContent = 'Place generated successfully.';}catch (error){placeStatus.textContent = 'Could not generate a place right now. Please try again.';console.error(error);}finally{setPlaceLoading(false);}}async function generateRomance(){setRomanceLoading(true);romanceStatus.textContent = 'Weaving fate and hearts...';try{var tone = romanceTone ? romanceTone.value.trim() : '';var drama = romanceDrama ? romanceDrama.value.trim() : '';var genderA = romanceGenderA ? romanceGenderA.value.trim() : '';var genderB = romanceGenderB ? romanceGenderB.value.trim() : '';var params = [];if (tone){params.push('tone=' + encodeURIComponent(tone));}if (drama){params.push('drama=' + encodeURIComponent(drama));}if (genderA){params.push('gender_a=' + encodeURIComponent(genderA));}if (genderB){params.push('gender_b=' + encodeURIComponent(genderB));}var url = 'api/generate_romance.php';if (params.length > 0){url += '?' + params.join('&');}var response = await fetch(url,{method: 'GET',headers:{'Accept': 'application/json'}});if (!response.ok){throw new Error('HTTP failure: ' + response.status);}var data = await response.json();if (!data.ok || !data.romance){throw new Error('Invalid server response.');}renderRomance(data.romance);romanceStatus.textContent = 'Romantic pair generated successfully.';}catch (error){romanceStatus.textContent = 'Could not generate a romantic pair right now. Please try again.';console.error(error);}finally{setRomanceLoading(false);}}async function generateCompany(){setCompanyLoading(true);companyStatus.textContent = 'Drafting ledgers,charters,and sphere values...';try{var size = companySize ? companySize.value.trim() : '';var kind = companyKind ? companyKind.value.trim() : '';var focus = companyFocus ? companyFocus.value.trim() : '';var params = [];if (size){params.push('size=' + encodeURIComponent(size));}if (kind){params.push('kind=' + encodeURIComponent(kind));}if (focus){params.push('focus=' + encodeURIComponent(focus));}var url = 'api/generate_company.php';if (params.length > 0){url += '?' + params.join('&');}var response = await fetch(url,{method: 'GET',headers:{'Accept': 'application/json'}});if (!response.ok){throw new Error('HTTP failure: ' + response.status);}var data = await response.json();if (!data.ok || !data.company){throw new Error('Invalid server response.');}renderCompany(data.company);companyStatus.textContent = 'Company generated successfully.';}catch (error){companyStatus.textContent = 'Could not generate a company right now. Please try again.';console.error(error);}finally{setCompanyLoading(false);}}menuButtons.forEach(function (button){button.addEventListener('click',function (){setActiveMenu(button.getAttribute('data-menu-target'));});});if (npcButton){npcButton.addEventListener('click',generateNpc);}if (lootButton){lootButton.addEventListener('click',generateLoot);}if (placeButton){placeButton.addEventListener('click',generatePlace);}if (romanceButton){romanceButton.addEventListener('click',generateRomance);}if (companyButton){companyButton.addEventListener('click',generateCompany);}if (encounterButton){encounterButton.addEventListener('click',generateEncounter);}setActiveMenu('npc');})();
+(function () {
+    var menuButtons = document.querySelectorAll('[data-menu-target]');
+    var panels = document.querySelectorAll('[data-generator-panel]');
+
+    var npcButton = document.querySelector('[data-npc-generate-button]');
+    var minInput = document.querySelector('[data-level-min]');
+    var maxInput = document.querySelector('[data-level-max]');
+    var raceFilter = document.querySelector('[data-filter-race]');
+    var classFilter = document.querySelector('[data-filter-class]');
+    var cultureFilter = document.querySelector('[data-filter-culture]');
+    var npcFields = document.querySelectorAll('[data-npc-field]');
+    var npcStatus = document.querySelector('[data-npc-status]');
+
+    var lootButton = document.querySelector('[data-loot-generate-button]');
+    var lootSource = document.querySelector('[data-loot-source]');
+    var lootRarity = document.querySelector('[data-loot-rarity]');
+    var lootCategory = document.querySelector('[data-loot-category]');
+    var lootFields = document.querySelectorAll('[data-loot-field]');
+    var lootStatus = document.querySelector('[data-loot-status]');
+    var lootItems = document.querySelector('[data-loot-items]');
+
+    var placeButton = document.querySelector('[data-place-generate-button]');
+    var placeType = document.querySelector('[data-place-type]');
+    var placeOccupants = document.querySelector('[data-place-occupants]');
+    var placeFields = document.querySelectorAll('[data-place-field]');
+    var placeStatus = document.querySelector('[data-place-status]');
+
+    var romanceButton = document.querySelector('[data-romance-generate-button]');
+    var romanceTone = document.querySelector('[data-romance-tone]');
+    var romanceDrama = document.querySelector('[data-romance-drama]');
+    var romanceGenderA = document.querySelector('[data-romance-gender-a]');
+    var romanceGenderB = document.querySelector('[data-romance-gender-b]');
+    var romanceFields = document.querySelectorAll('[data-romance-field]');
+    var romanceStatus = document.querySelector('[data-romance-status]');
+    var romancePartners = document.querySelector('[data-romance-partners]');
+
+    var companyButton = document.querySelector('[data-company-generate-button]');
+    var companySize = document.querySelector('[data-company-size]');
+    var companyKind = document.querySelector('[data-company-kind]');
+    var companyFocus = document.querySelector('[data-company-focus]');
+    var companyFields = document.querySelectorAll('[data-company-field]');
+    var companyStatus = document.querySelector('[data-company-status]');
+
+    var encounterButton = document.querySelector('[data-encounter-generate-button]');
+    var encounterCategory = document.querySelector('[data-encounter-category]');
+    var encounterFields = document.querySelectorAll('[data-encounter-field]');
+    var encounterStatus = document.querySelector('[data-encounter-status]');
+
+    var scarcityButton = document.querySelector('[data-scarcity-generate-button]');
+    var scarcityEvent = document.querySelector('[data-scarcity-event]');
+    var scarcityCategory = document.querySelector('[data-scarcity-category]');
+    var scarcityLevel = document.querySelector('[data-scarcity-level]');
+    var scarcityFields = document.querySelectorAll('[data-scarcity-field]');
+    var scarcityStatus = document.querySelector('[data-scarcity-status]');
+    var scarcityItems = document.querySelector('[data-scarcity-items]');
+
+    function setActiveMenu(target) {
+        menuButtons.forEach(function (button) {
+            var isCurrent = button.getAttribute('data-menu-target') === target;
+            button.classList.toggle('is-active', isCurrent);
+            button.setAttribute('aria-pressed', isCurrent ? 'true' : 'false');
+        });
+
+        panels.forEach(function (panel) {
+            var isCurrent = panel.getAttribute('data-generator-panel') === target;
+            panel.classList.toggle('is-hidden', !isCurrent);
+        });
+    }
+
+    function flashElement(field) {
+        field.classList.remove('flash');
+        void field.offsetWidth;
+        field.classList.add('flash');
+    }
+
+    function setNpcLoading(isLoading) {
+        if (!npcButton) {
+            return;
+        }
+
+        npcButton.disabled = isLoading;
+        npcButton.textContent = isLoading ? 'Generating...' : 'Generate NPC';
+    }
+
+    function renderNpc(npc) {
+        npcFields.forEach(function (field) {
+            var key = field.getAttribute('data-npc-field');
+            field.textContent = npc[key] || '-';
+            flashElement(field);
+        });
+    }
+
+    function setLootLoading(isLoading) {
+        if (!lootButton) {
+            return;
+        }
+
+        lootButton.disabled = isLoading;
+        lootButton.textContent = isLoading ? 'Generating...' : 'Generate Loot';
+    }
+
+    function renderLoot(loot) {
+        lootFields.forEach(function (field) {
+            var key = field.getAttribute('data-loot-field');
+            field.textContent = loot[key] || '-';
+            flashElement(field);
+        });
+
+        if (!lootItems) {
+            return;
+        }
+
+        lootItems.innerHTML = '';
+        (loot.items || []).forEach(function (item) {
+            var entry = document.createElement('li');
+            var title = document.createElement('strong');
+            var meta = document.createElement('span');
+            var detail = document.createElement('p');
+
+            title.textContent = item.name || 'Unknown item';
+            meta.textContent = (item.type || '-') + ' | ' + (item.condition || '-') + ' | ' + (item.value || '-');
+            detail.textContent = item.detail || '';
+
+            entry.appendChild(title);
+            entry.appendChild(meta);
+            entry.appendChild(detail);
+            lootItems.appendChild(entry);
+        });
+    }
+
+    function setPlaceLoading(isLoading) {
+        if (!placeButton) {
+            return;
+        }
+
+        placeButton.disabled = isLoading;
+        placeButton.textContent = isLoading ? 'Generating...' : 'Generate Place';
+    }
+
+    function renderPlace(place) {
+        placeFields.forEach(function (field) {
+            var key = field.getAttribute('data-place-field');
+            field.textContent = place[key] || '-';
+            flashElement(field);
+        });
+    }
+
+    function setRomanceLoading(isLoading) {
+        if (!romanceButton) {
+            return;
+        }
+
+        romanceButton.disabled = isLoading;
+        romanceButton.textContent = isLoading ? 'Generating...' : 'Generate Romantic Pair';
+    }
+
+    function renderRomance(romance) {
+        romanceFields.forEach(function (field) {
+            var key = field.getAttribute('data-romance-field');
+            field.textContent = romance[key] || '-';
+            flashElement(field);
+        });
+
+        if (!romancePartners) {
+            return;
+        }
+
+        romancePartners.innerHTML = '';
+        (romance.partners || []).forEach(function (partner) {
+            var entry = document.createElement('li');
+            var title = document.createElement('strong');
+            var meta = document.createElement('span');
+            var detail = document.createElement('p');
+
+            title.textContent = partner.name || 'Mysterious partner';
+            meta.textContent = (partner.gender || '-') + ' | prefers: ' + (partner.preference || '-');
+            detail.textContent = 'Clothing style: ' + (partner.style || '-');
+
+            entry.appendChild(title);
+            entry.appendChild(meta);
+            entry.appendChild(detail);
+            romancePartners.appendChild(entry);
+        });
+    }
+
+    function setCompanyLoading(isLoading) {
+        if (!companyButton) {
+            return;
+        }
+
+        companyButton.disabled = isLoading;
+        companyButton.textContent = isLoading ? 'Generating...' : 'Generate Company';
+    }
+
+    function renderCompany(company) {
+        companyFields.forEach(function (field) {
+            var key = field.getAttribute('data-company-field');
+            field.textContent = company[key] || '-';
+            flashElement(field);
+        });
+    }
+
+    function setEncounterLoading(isLoading) {
+        if (!encounterButton) {
+            return;
+        }
+
+        encounterButton.disabled = isLoading;
+        encounterButton.textContent = isLoading ? 'Generating...' : 'Generate Encounter';
+    }
+
+    function renderEncounter(encounter) {
+        encounterFields.forEach(function (field) {
+            var key = field.getAttribute('data-encounter-field');
+            field.textContent = encounter[key] || '-';
+            flashElement(field);
+        });
+    }
+
+    function setScarcityLoading(isLoading) {
+        if (!scarcityButton) {
+            return;
+        }
+
+        scarcityButton.disabled = isLoading;
+        scarcityButton.textContent = isLoading ? 'Generating...' : 'Generate Scarcity';
+    }
+
+    function renderScarcity(scarcity) {
+        scarcityFields.forEach(function (field) {
+            var key = field.getAttribute('data-scarcity-field');
+            var value = scarcity[key];
+            if (key === 'average_change') {
+                value = String(value) + '%';
+            }
+            field.textContent = value || '-';
+            flashElement(field);
+        });
+
+        if (!scarcityItems) {
+            return;
+        }
+
+        scarcityItems.innerHTML = '';
+        (scarcity.items || []).forEach(function (item) {
+            var entry = document.createElement('tr');
+            var itemCell = document.createElement('td');
+            var categoryCell = document.createElement('td');
+            var baseCell = document.createElement('td');
+            var adjustedCell = document.createElement('td');
+            var changeCell = document.createElement('td');
+            var reasonCell = document.createElement('td');
+            var sign = item.change_percent >= 0 ? '+' : '';
+
+            itemCell.textContent = item.name || 'Unknown item';
+            categoryCell.textContent = item.category || '-';
+            baseCell.textContent = item.base_price || '-';
+            adjustedCell.textContent = item.adjusted_price || '-';
+            changeCell.textContent = sign + String(item.change_percent || 0) + '%';
+            changeCell.className = 'change ' + (item.change_percent >= 0 ? 'up' : 'down');
+            reasonCell.textContent = item.reason || '';
+
+            entry.appendChild(itemCell);
+            entry.appendChild(categoryCell);
+            entry.appendChild(baseCell);
+            entry.appendChild(adjustedCell);
+            entry.appendChild(changeCell);
+            entry.appendChild(reasonCell);
+            scarcityItems.appendChild(entry);
+        });
+    }
+
+    async function generateNpc() {
+        var min = Number(minInput ? minInput.value : 1) || 1;
+        var max = Number(maxInput ? maxInput.value : 12) || 12;
+
+        if (min < 1) {
+            min = 1;
+        }
+
+        if (max < min) {
+            max = min;
+            if (maxInput) {
+                maxInput.value = String(max);
+            }
+        }
+
+        setNpcLoading(true);
+        npcStatus.textContent = 'Invoking names, secrets, and rumors...';
+
+        try {
+            var race = raceFilter ? raceFilter.value.trim() : '';
+            var playerClass = classFilter ? classFilter.value.trim() : '';
+            var culture = cultureFilter ? cultureFilter.value.trim() : '';
+            var params = [
+                'level_min=' + encodeURIComponent(min),
+                'level_max=' + encodeURIComponent(max)
+            ];
+
+            if (race) {
+                params.push('race=' + encodeURIComponent(race));
+            }
+            if (playerClass) {
+                params.push('class=' + encodeURIComponent(playerClass));
+            }
+            if (culture) {
+                params.push('culture=' + encodeURIComponent(culture));
+            }
+
+            var url = 'api/generate_npc.php?' + params.join('&');
+            var response = await fetch(url, {
+                method: 'GET',
+                headers: {'Accept': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error('HTTP failure: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.npc) {
+                throw new Error('Invalid server response.');
+            }
+
+            renderNpc(data.npc);
+            npcStatus.textContent = 'NPC generated successfully.';
+        } catch (error) {
+            npcStatus.textContent = 'Could not generate right now. Please try again.';
+            console.error(error);
+        } finally {
+            setNpcLoading(false);
+        }
+    }
+
+    async function generateLoot() {
+        setLootLoading(true);
+        lootStatus.textContent = 'Searching pockets, chests, and hideouts...';
+
+        try {
+            var source = lootSource ? lootSource.value.trim() : '';
+            var rarity = lootRarity ? lootRarity.value.trim() : '';
+            var category = lootCategory ? lootCategory.value.trim() : '';
+            var params = [];
+
+            if (source) {
+                params.push('source=' + encodeURIComponent(source));
+            }
+            if (rarity) {
+                params.push('rarity=' + encodeURIComponent(rarity));
+            }
+            if (category) {
+                params.push('category=' + encodeURIComponent(category));
+            }
+
+            var url = 'api/generate_loot.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, {
+                method: 'GET',
+                headers: {'Accept': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error('HTTP failure: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.loot) {
+                throw new Error('Invalid server response.');
+            }
+
+            renderLoot(data.loot);
+            lootStatus.textContent = 'Loot generated successfully.';
+        } catch (error) {
+            lootStatus.textContent = 'Could not generate loot right now. Please try again.';
+            console.error(error);
+        } finally {
+            setLootLoading(false);
+        }
+    }
+
+    async function generatePlace() {
+        setPlaceLoading(true);
+        placeStatus.textContent = 'Exploring ruined corridors...';
+
+        try {
+            var type = placeType ? placeType.value.trim() : '';
+            var occupants = placeOccupants ? placeOccupants.value.trim() : '';
+            var params = [];
+
+            if (type) {
+                params.push('type=' + encodeURIComponent(type));
+            }
+            if (occupants) {
+                params.push('occupants=' + encodeURIComponent(occupants));
+            }
+
+            var url = 'api/generate_place.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, {
+                method: 'GET',
+                headers: {'Accept': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error('HTTP failure: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.place) {
+                throw new Error('Invalid server response.');
+            }
+
+            renderPlace(data.place);
+            placeStatus.textContent = 'Place generated successfully.';
+        } catch (error) {
+            placeStatus.textContent = 'Could not generate a place right now. Please try again.';
+            console.error(error);
+        } finally {
+            setPlaceLoading(false);
+        }
+    }
+
+    async function generateRomance() {
+        setRomanceLoading(true);
+        romanceStatus.textContent = 'Weaving fate and hearts...';
+
+        try {
+            var tone = romanceTone ? romanceTone.value.trim() : '';
+            var drama = romanceDrama ? romanceDrama.value.trim() : '';
+            var genderA = romanceGenderA ? romanceGenderA.value.trim() : '';
+            var genderB = romanceGenderB ? romanceGenderB.value.trim() : '';
+            var params = [];
+
+            if (tone) {
+                params.push('tone=' + encodeURIComponent(tone));
+            }
+            if (drama) {
+                params.push('drama=' + encodeURIComponent(drama));
+            }
+            if (genderA) {
+                params.push('gender_a=' + encodeURIComponent(genderA));
+            }
+            if (genderB) {
+                params.push('gender_b=' + encodeURIComponent(genderB));
+            }
+
+            var url = 'api/generate_romance.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, {
+                method: 'GET',
+                headers: {'Accept': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error('HTTP failure: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.romance) {
+                throw new Error('Invalid server response.');
+            }
+
+            renderRomance(data.romance);
+            romanceStatus.textContent = 'Romantic pair generated successfully.';
+        } catch (error) {
+            romanceStatus.textContent = 'Could not generate a romantic pair right now. Please try again.';
+            console.error(error);
+        } finally {
+            setRomanceLoading(false);
+        }
+    }
+
+    async function generateCompany() {
+        setCompanyLoading(true);
+        companyStatus.textContent = 'Drafting ledgers, charters, and sphere values...';
+
+        try {
+            var size = companySize ? companySize.value.trim() : '';
+            var kind = companyKind ? companyKind.value.trim() : '';
+            var focus = companyFocus ? companyFocus.value.trim() : '';
+            var params = [];
+
+            if (size) {
+                params.push('size=' + encodeURIComponent(size));
+            }
+            if (kind) {
+                params.push('kind=' + encodeURIComponent(kind));
+            }
+            if (focus) {
+                params.push('focus=' + encodeURIComponent(focus));
+            }
+
+            var url = 'api/generate_company.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, {
+                method: 'GET',
+                headers: {'Accept': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error('HTTP failure: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.company) {
+                throw new Error('Invalid server response.');
+            }
+
+            renderCompany(data.company);
+            companyStatus.textContent = 'Company generated successfully.';
+        } catch (error) {
+            companyStatus.textContent = 'Could not generate a company right now. Please try again.';
+            console.error(error);
+        } finally {
+            setCompanyLoading(false);
+        }
+    }
+
+    async function generateEncounter() {
+        setEncounterLoading(true);
+        encounterStatus.textContent = 'Scanning the wilds for threats...';
+
+        try {
+            var category = encounterCategory ? encounterCategory.value.trim() : '';
+            var params = [];
+
+            if (category) {
+                params.push('category=' + encodeURIComponent(category));
+            }
+
+            var url = 'api/generate_encounter.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, {
+                method: 'GET',
+                headers: {'Accept': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error('HTTP failure: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.encounter) {
+                throw new Error('Invalid server response.');
+            }
+
+            renderEncounter(data.encounter);
+            encounterStatus.textContent = 'Encounter generated successfully.';
+        } catch (error) {
+            encounterStatus.textContent = 'Could not generate an encounter right now. Please try again.';
+            console.error(error);
+        } finally {
+            setEncounterLoading(false);
+        }
+    }
+
+    async function generateScarcity() {
+        setScarcityLoading(true);
+        scarcityStatus.textContent = 'Applying market pressure to regional trade...';
+
+        try {
+            var eventKey = scarcityEvent ? scarcityEvent.value.trim() : '';
+            var category = scarcityCategory ? scarcityCategory.value.trim() : '';
+            var level = scarcityLevel ? scarcityLevel.value.trim() : '';
+            var params = [];
+
+            if (eventKey) {
+                params.push('event=' + encodeURIComponent(eventKey));
+            }
+            if (category && category.toLowerCase() !== 'any') {
+                params.push('category=' + encodeURIComponent(category));
+            }
+            if (level) {
+                params.push('scarcity_level=' + encodeURIComponent(level));
+            }
+
+            var url = 'api/generate_scarcity.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, {
+                method: 'GET',
+                headers: {'Accept': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error('HTTP failure: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.scarcity) {
+                throw new Error('Invalid server response.');
+            }
+
+            renderScarcity(data.scarcity);
+            scarcityStatus.textContent = 'Scarcity report generated successfully.';
+        } catch (error) {
+            scarcityStatus.textContent = 'Could not generate scarcity report right now. Please try again.';
+            console.error(error);
+        } finally {
+            setScarcityLoading(false);
+        }
+    }
+
+    menuButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            setActiveMenu(button.getAttribute('data-menu-target'));
+        });
+    });
+
+    if (npcButton) {
+        npcButton.addEventListener('click', generateNpc);
+    }
+    if (lootButton) {
+        lootButton.addEventListener('click', generateLoot);
+    }
+    if (placeButton) {
+        placeButton.addEventListener('click', generatePlace);
+    }
+    if (romanceButton) {
+        romanceButton.addEventListener('click', generateRomance);
+    }
+    if (companyButton) {
+        companyButton.addEventListener('click', generateCompany);
+    }
+    if (encounterButton) {
+        encounterButton.addEventListener('click', generateEncounter);
+    }
+    if (scarcityButton) {
+        scarcityButton.addEventListener('click', generateScarcity);
+    }
+
+    setActiveMenu('npc');
+})();

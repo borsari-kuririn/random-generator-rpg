@@ -8,6 +8,7 @@ require_once __DIR__ . '/includes/place_generator.php';
 require_once __DIR__ . '/includes/romance_generator.php';
 require_once __DIR__ . '/includes/company_generator.php';
 require_once __DIR__ . '/includes/encounter_generator.php';
+require_once __DIR__ . '/includes/scarcity_generator.php';
 require_once __DIR__ . '/includes/critical_injuries.php';
 
 $generatorOptions = rg_get_generator_options();
@@ -16,12 +17,14 @@ $placeOptions = rg_get_place_options();
 $romanceOptions = rg_get_romance_options();
 $companyOptions = rg_get_company_options();
 $encounterOptions = rg_get_encounter_options();
+$scarcityOptions = rg_get_scarcity_options();
 $npc = rg_generate_npc();
 $loot = rg_generate_loot();
 $place = rg_generate_place();
 $romance = rg_generate_romantic_pair();
 $company = rg_generate_company();
 $encounter = rg_generate_encounter();
+$scarcity = rg_generate_scarcity();
 ?>
 <!doctype html>
 <html lang="en">
@@ -32,6 +35,7 @@ $encounter = rg_generate_encounter();
     <meta name="description" content="NPC, loot, abandoned place, romantic pair, and company generators for fantasy campaigns.">
     <link rel="stylesheet" href="assets/css/style.css?v=3">
     <link rel="stylesheet" href="assets/css/critical-injuries.css?v=3">
+    <link rel="stylesheet" href="assets/css/scarcity-table.css?v=1">
 </head>
 <body>
     <header class="top-header">
@@ -43,6 +47,7 @@ $encounter = rg_generate_encounter();
             <button type="button" class="menu-button" data-menu-target="romance" aria-pressed="false">Romantic Pair Generator</button>
             <button type="button" class="menu-button" data-menu-target="company" aria-pressed="false">Company Generator</button>
             <button type="button" class="menu-button" data-menu-target="encounter" aria-pressed="false">Encounter Generator</button>
+            <button type="button" class="menu-button" data-menu-target="scarcity" aria-pressed="false">Scarcity Generator</button>
             <button type="button" class="menu-button" data-menu-target="critical-injury" aria-pressed="false">Critical Injury Lookup</button>
         </nav>
         <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
@@ -656,13 +661,103 @@ $encounter = rg_generate_encounter();
             </article>
         </section>
 
+        <section class="panel is-hidden" data-generator-panel="scarcity" aria-live="polite">
+            <div class="controls">
+                <div class="filters">
+                    <label class="field">
+                        <span>Market event</span>
+                        <select data-scarcity-event>
+                            <option value="">Random</option>
+                            <?php foreach ($scarcityOptions['events'] as $eventKey => $eventData): ?>
+                                <option value="<?php echo htmlspecialchars((string)$eventKey, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars((string)$eventData['label'], ENT_QUOTES, 'UTF-8'); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                    <label class="field">
+                        <span>Category filter</span>
+                        <select data-scarcity-category>
+                            <?php foreach ($scarcityOptions['categories'] as $categoryOption): ?>
+                                <option value="<?php echo htmlspecialchars((string)$categoryOption, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars((string)$categoryOption, ENT_QUOTES, 'UTF-8'); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                    <label class="field">
+                        <span>Scarcity level</span>
+                        <select data-scarcity-level>
+                            <?php foreach ($scarcityOptions['levels'] as $levelKey => $levelData): ?>
+                                <option value="<?php echo htmlspecialchars((string)$levelKey, ENT_QUOTES, 'UTF-8'); ?>" <?php echo $levelKey === 'high' ? 'selected' : ''; ?>><?php echo htmlspecialchars((string)$levelData['label'], ENT_QUOTES, 'UTF-8'); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button type="button" data-scarcity-generate-button>Generate Scarcity</button>
+                    <p class="status" data-scarcity-status>Ready to shake up local prices.</p>
+                </div>
+            </div>
+
+            <article class="card">
+                <h2 class="card-title" data-scarcity-field="event_name"><?php echo htmlspecialchars($scarcity['event_name'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                <div class="grid">
+                    <div class="item">
+                        <strong>Event description</strong>
+                        <p class="value" data-scarcity-field="event_description"><?php echo htmlspecialchars($scarcity['event_description'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Category filter</strong>
+                        <p class="value" data-scarcity-field="category_filter"><?php echo htmlspecialchars($scarcity['category_filter'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Scarcity level</strong>
+                        <p class="value" data-scarcity-field="scarcity_level"><?php echo htmlspecialchars((string)$scarcity['scarcity_level'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Average market change</strong>
+                        <p class="value" data-scarcity-field="average_change"><?php echo htmlspecialchars((string)$scarcity['average_change'], ENT_QUOTES, 'UTF-8'); ?>%</p>
+                    </div>
+                </div>
+
+                <h3 class="loot-subtitle">Adjusted prices</h3>
+                <div class="scarcity-table-wrap">
+                    <table class="scarcity-table" aria-label="Adjusted market prices">
+                        <thead>
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Base Price</th>
+                                <th scope="col">Adjusted Price</th>
+                                <th scope="col">Change</th>
+                                <th scope="col">Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody data-scarcity-items>
+                            <?php foreach ($scarcity['items'] as $item): ?>
+                                <?php $changePercent = (int)($item['change_percent'] ?? 0); ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars((string)$item['name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars((string)$item['category'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars((string)$item['base_price'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars((string)$item['adjusted_price'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td class="change <?php echo $changePercent >= 0 ? 'up' : 'down'; ?>">
+                                        <?php echo ($changePercent >= 0 ? '+' : '') . htmlspecialchars((string)$changePercent, ENT_QUOTES, 'UTF-8'); ?>%
+                                    </td>
+                                    <td><?php echo htmlspecialchars((string)$item['reason'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
         <p class="footer">
             Original material inspired by classic fantasy. No official content was copied.<br>
             All content rights belong to Free League, creator of Forbidden Lands RPG.
         </p>
     </main>
 
-    <script src="assets/js/app.js?v=3" defer></script>
+    <script src="assets/js/app.js?v=5" defer></script>
     <script src="assets/js/critical-injuries.js?v=3" defer></script>
     <script>
         // Theme toggle functionality
