@@ -727,6 +727,8 @@ $scarcity = rg_generate_scarcity();
                                 <th scope="col">Category</th>
                                 <th scope="col">Base Price</th>
                                 <th scope="col">Adjusted Price</th>
+                                <th scope="col">Vendor Buy Price</th>
+                                <th scope="col">Vendor Sell Price</th>
                                 <th scope="col">Change</th>
                                 <th scope="col">Reason</th>
                             </tr>
@@ -739,6 +741,8 @@ $scarcity = rg_generate_scarcity();
                                     <td><?php echo htmlspecialchars((string)$item['category'], ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td><?php echo htmlspecialchars((string)$item['base_price'], ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td><?php echo htmlspecialchars((string)$item['adjusted_price'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars((string)($item['vendor_buy_price'] ?? '-'), ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars((string)($item['vendor_sell_price'] ?? '-'), ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td class="change <?php echo $changePercent >= 0 ? 'up' : 'down'; ?>">
                                         <?php echo ($changePercent >= 0 ? '+' : '') . htmlspecialchars((string)$changePercent, ENT_QUOTES, 'UTF-8'); ?>%
                                     </td>

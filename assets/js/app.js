@@ -248,6 +248,8 @@
             var categoryCell = document.createElement('td');
             var baseCell = document.createElement('td');
             var adjustedCell = document.createElement('td');
+            var vendorBuyCell = document.createElement('td');
+            var vendorSellCell = document.createElement('td');
             var changeCell = document.createElement('td');
             var reasonCell = document.createElement('td');
             var sign = item.change_percent >= 0 ? '+' : '';
@@ -256,6 +258,8 @@
             categoryCell.textContent = item.category || '-';
             baseCell.textContent = item.base_price || '-';
             adjustedCell.textContent = item.adjusted_price || '-';
+            vendorBuyCell.textContent = item.vendor_buy_price || '-';
+            vendorSellCell.textContent = item.vendor_sell_price || '-';
             changeCell.textContent = sign + String(item.change_percent || 0) + '%';
             changeCell.className = 'change ' + (item.change_percent >= 0 ? 'up' : 'down');
             reasonCell.textContent = item.reason || '';
@@ -264,6 +268,8 @@
             entry.appendChild(categoryCell);
             entry.appendChild(baseCell);
             entry.appendChild(adjustedCell);
+            entry.appendChild(vendorBuyCell);
+            entry.appendChild(vendorSellCell);
             entry.appendChild(changeCell);
             entry.appendChild(reasonCell);
             scarcityItems.appendChild(entry);

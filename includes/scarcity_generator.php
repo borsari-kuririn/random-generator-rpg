@@ -204,13 +204,13 @@ function rg_copper_to_price(int $copper): string
 
     $parts = [];
     if ($gold > 0) {
-        $parts[] = $gold . ' gold';
+        $parts[] = $gold . 'gp';
     }
     if ($silver > 0) {
-        $parts[] = $silver . ' silver';
+        $parts[] = $silver . 'sp';
     }
     if ($copperLeft > 0 || empty($parts)) {
-        $parts[] = $copperLeft . ' copper';
+        $parts[] = $copperLeft . 'cp';
     }
 
     return implode(' ', $parts);
@@ -321,19 +321,37 @@ function rg_generate_scarcity(array $options = []): array
         $percent = rg_scale_percent_by_scarcity_level($basePercent, $scarcityLevel);
 
         $adjustedCopper = (int)max(1, round($baseCopper * (1 + ($percent / 100))));
+        $vendorBuyMargin = random_int(10, 30);
+        $vendorSellMargin = random_int(10, 30);
+        $vendorBuyCopper = (int)max(1, round($adjustedCopper * (1 - ($vendorBuyMargin / 100))));
+        $vendorSellCopper = (int)max(1, round($adjustedCopper * (1 + ($vendorSellMargin / 100))));
 
         $adjustedItems[] = [
             'name' => $item['name'],
             'category' => $item['category'],
             'base_price' => rg_copper_to_price($baseCopper),
             'adjusted_price' => rg_copper_to_price($adjustedCopper),
+            'vendor_buy_price' => rg_copper_to_price($vendorBuyCopper),
+            'vendor_sell_price' => rg_copper_to_price($vendorSellCopper),
             'change_percent' => $percent,
             'trend' => $percent >= 0 ? 'up' : 'down',
+            'vendor_buy_margin_percent' => $vendorBuyMargin,
+            'vendor_sell_margin_percent' => $vendorSellMargin,
             'reason' => $isAffected ? 'Directly affected by this event' : 'Indirect market reaction',
         ];
     }
 
     usort($adjustedItems, function (array $a, array $b): int {
+        $nameComparison = strcasecmp((string)($a['name'] ?? ''), (string)($b['name'] ?? ''));
+        if ($nameComparison !== 0) {
+            return $nameComparison;
+        }
+
+        $categoryComparison = strcasecmp((string)($a['category'] ?? ''), (string)($b['category'] ?? ''));
+        if ($categoryComparison !== 0) {
+            return $categoryComparison;
+        }
+
         return abs($b['change_percent']) <=> abs($a['change_percent']);
     });
 
