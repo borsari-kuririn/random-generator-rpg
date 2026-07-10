@@ -9,6 +9,7 @@ require_once __DIR__ . '/includes/romance_generator.php';
 require_once __DIR__ . '/includes/company_generator.php';
 require_once __DIR__ . '/includes/encounter_generator.php';
 require_once __DIR__ . '/includes/scarcity_generator.php';
+require_once __DIR__ . '/includes/mishap_generator.php';
 require_once __DIR__ . '/includes/critical_injuries.php';
 
 $generatorOptions = rg_get_generator_options();
@@ -18,6 +19,7 @@ $romanceOptions = rg_get_romance_options();
 $companyOptions = rg_get_company_options();
 $encounterOptions = rg_get_encounter_options();
 $scarcityOptions = rg_get_scarcity_options();
+$mishapOptions = rg_get_mishap_options();
 $npc = rg_generate_npc();
 $loot = rg_generate_loot();
 $place = rg_generate_place();
@@ -25,6 +27,7 @@ $romance = rg_generate_romantic_pair();
 $company = rg_generate_company();
 $encounter = rg_generate_encounter();
 $scarcity = rg_generate_scarcity();
+$magicMishap = rg_generate_mishap(['table' => 'magic']);
 ?>
 <!doctype html>
 <html lang="en">
@@ -36,6 +39,7 @@ $scarcity = rg_generate_scarcity();
     <link rel="stylesheet" href="assets/css/style.css?v=3">
     <link rel="stylesheet" href="assets/css/critical-injuries.css?v=3">
     <link rel="stylesheet" href="assets/css/scarcity-table.css?v=1">
+    <link rel="stylesheet" href="assets/css/mishaps.css?v=1">
 </head>
 <body>
     <header class="top-header">
@@ -48,6 +52,7 @@ $scarcity = rg_generate_scarcity();
             <button type="button" class="menu-button" data-menu-target="company" aria-pressed="false">Company Generator</button>
             <button type="button" class="menu-button" data-menu-target="encounter" aria-pressed="false">Encounter Generator</button>
             <button type="button" class="menu-button" data-menu-target="scarcity" aria-pressed="false">Scarcity Generator</button>
+            <button type="button" class="menu-button" data-menu-target="mishap" aria-pressed="false">Mishap Generator</button>
             <button type="button" class="menu-button" data-menu-target="critical-injury" aria-pressed="false">Critical Injury Lookup</button>
         </nav>
         <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
@@ -755,6 +760,55 @@ $scarcity = rg_generate_scarcity();
             </article>
         </section>
 
+        <section class="panel is-hidden" data-generator-panel="mishap" aria-live="polite">
+            <div class="controls">
+                <div class="filters filters-two">
+                    <label class="field">
+                        <span>Mishap table</span>
+                        <select data-mishap-table>
+                            <?php foreach ($mishapOptions['tables'] as $tableKey => $tableLabel): ?>
+                                <option value="<?php echo htmlspecialchars((string)$tableKey, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars((string)$tableLabel, ENT_QUOTES, 'UTF-8'); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="dice-roll">
+                    <label class="field">
+                        <span>First D6 (Tens)</span>
+                        <input type="number" min="1" max="6" value="<?php echo htmlspecialchars((string)$magicMishap['dice1'], ENT_QUOTES, 'UTF-8'); ?>" data-mishap-dice1 class="dice-input">
+                    </label>
+                    <label class="field">
+                        <span>Second D6 (Ones)</span>
+                        <input type="number" min="1" max="6" value="<?php echo htmlspecialchars((string)$magicMishap['dice2'], ENT_QUOTES, 'UTF-8'); ?>" data-mishap-dice2 class="dice-input">
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button type="button" data-mishap-generate-button>Generate Mishap</button>
+                    <p class="status" data-mishap-status>Ready to roll a mishap.</p>
+                </div>
+            </div>
+
+            <article class="card">
+                <h2 class="card-title" data-mishap-field="table_label"><?php echo htmlspecialchars((string)$magicMishap['table_label'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                <div class="grid mishap-grid">
+                    <div class="item">
+                        <strong>Outcome</strong>
+                        <p class="value" data-mishap-field="result"><?php echo htmlspecialchars((string)$magicMishap['entry']['result'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Severity</strong>
+                        <p class="value" data-mishap-field="severity"><?php echo htmlspecialchars((string)$magicMishap['entry']['severity'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item mishap-effect-full">
+                        <strong>Effect</strong>
+                        <p class="value" data-mishap-field="effect"><?php echo htmlspecialchars((string)$magicMishap['entry']['effect'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                </div>
+            </article>
+        </section>
+
         <p class="footer">
             Original material inspired by classic fantasy. No official content was copied.<br>
             All content rights belong to Free League, creator of Forbidden Lands RPG.
@@ -762,6 +816,7 @@ $scarcity = rg_generate_scarcity();
     </main>
 
     <script src="assets/js/app.js?v=5" defer></script>
+    <script src="assets/js/mishaps.js?v=2" defer></script>
     <script src="assets/js/critical-injuries.js?v=3" defer></script>
     <script>
         // Theme toggle functionality

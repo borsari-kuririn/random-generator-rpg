@@ -1,0 +1,17 @@
+section[data-generator-panel="mishap"] .mishap-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+section[data-generator-panel="mishap"] .mishap-effect-full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 720px) {
+  section[data-generator-panel="mishap"] .mishap-grid {
+    grid-template-columns: 1fr;
+  }
+
+  section[data-generator-panel="mishap"] .mishap-effect-full {
+    grid-column: auto;
+  }
+}
