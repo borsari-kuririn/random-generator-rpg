@@ -4,6 +4,8 @@
 - feat: include new update logs
 - feat: implement new Make camp and Sea Travel Mishaps
 - feat: implement new Make camp and Sea Travel Mishaps
+- feat: add Survival, Insight, Scouting, Marksmanship, and Lore mishap table specs
+- feat: register Survival, Insight, Scouting, Marksmanship, and Lore mishaps in generator UI and API
 
 ## 2026-07-10
 - feat: implement base to mishaps

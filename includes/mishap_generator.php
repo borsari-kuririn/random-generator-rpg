@@ -249,6 +249,121 @@ function rg_get_healing_mishaps(): array
     }, $rows);
 }
 
+function rg_get_survival_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'False Trail', 'effect' => 'You mistake an animal track or wash for the true path. The group wastes a Quarter Day following the wrong route.', 'severity' => 'Moderate'],
+        ['dice' => '14-16', 'result' => 'Bad Water', 'effect' => 'You choose a tainted spring, muddy pool, or stagnant runoff as a safe source. Everyone who drinks risks sickness at the GM\'s discretion.', 'severity' => 'High'],
+        ['dice' => '21-23', 'result' => 'Cold Camp March', 'effect' => 'You press on through bad ground without proper shelter or pacing. Suffer 1 point of damage to Strength from fatigue and exposure.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Lost Bearings', 'effect' => 'You lose your sense of direction among trees, hills, or mist. The group makes no progress this Quarter Day.', 'severity' => 'High'],
+        ['dice' => '31-33', 'result' => 'Spoiled Supplies', 'effect' => 'Your travel methods ruin or spill essential rations or water. Reduce one relevant Resource Die by one step for the group.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Exhausting Detour', 'effect' => 'You choose terrain that is passable but brutally inefficient. Everyone in the group suffers 1 point of damage to Agility or Strength, GM\'s choice.', 'severity' => 'High'],
+        ['dice' => '41-43', 'result' => 'Predator Sign Missed', 'effect' => 'You fail to read the signs of a nearby predator. A dangerous beast finds your group before you are ready.', 'severity' => 'High'],
+        ['dice' => '44-46', 'result' => 'Unsafe Crossing', 'effect' => 'You lead the group across unstable ground, thin ice, or a bad ford. Each adventurer must make a MOVE roll or suffer an attack with four Base Dice.', 'severity' => 'High'],
+        ['dice' => '51-53', 'result' => 'Night Without Rest', 'effect' => 'Your chosen resting place offers no real shelter from damp, wind, or insects. No one in the group gets any SLEEP until a better camp is found.', 'severity' => 'Severe'],
+        ['dice' => '54-56', 'result' => 'Poison Growth', 'effect' => 'You guide the group toward edible-looking plants or fungi that are actually dangerous. A meal prepared from them carries a poison of Potency 3.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Dead End Country', 'effect' => 'You lead the group into terrain that cannot be crossed without climbing back out, circling wide, or abandoning gear. Lose a Quarter Day and one useful item, GM\'s choice.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Wilderness Claim', 'effect' => 'Your error leaves the group stranded in deadly country with failing supplies and danger closing in. The GM introduces an immediate survival crisis.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_insight_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Wrong Read', 'effect' => 'You mistake nerves, grief, or fear for deception. Your next social move with this NPC starts from a false assumption.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Visible Suspicion', 'effect' => 'Your scrutiny is obvious. The other person notices and becomes guarded or offended.', 'severity' => 'Low'],
+        ['dice' => '21-23', 'result' => 'Played for a Fool', 'effect' => 'A liar feeds you exactly the tells you expect. You believe a falsehood until contradictory evidence appears.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Emotional Spill', 'effect' => 'You push too hard while studying someone. Their strongest emotion erupts openly and the scene grows tense.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Misread Motive', 'effect' => 'You confuse hate for fear, love for guilt, or loyalty for greed. Any decision based on this read leads you in the wrong direction.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Insulting Probe', 'effect' => 'Your questions or stare come off as accusatory. The NPC\'s attitude drops one step.', 'severity' => 'Moderate'],
+        ['dice' => '41-43', 'result' => 'Turned Against You', 'effect' => 'The target realizes you are weighing every word and starts manipulating you instead. They gain the upper hand in the conversation.', 'severity' => 'High'],
+        ['dice' => '44-46', 'result' => 'False Confidence', 'effect' => 'You become certain you understand the person when you do not. The GM may give you one misleading but plausible conclusion.', 'severity' => 'High'],
+        ['dice' => '51-53', 'result' => 'Public Misjudgment', 'effect' => 'You call out a lie, hidden motive, or emotion in front of others and get it wrong. Your reputation in this scene suffers immediately.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'Dangerous Truth', 'effect' => 'You do read a strong emotion correctly, but revealing it at the wrong moment provokes panic, rage, or despair. The NPC reacts dramatically.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Trap of Trust', 'effect' => 'You trust someone who means you harm or reject someone who was honest. The consequences hit before you can correct the mistake.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Fatal Misread', 'effect' => 'You completely misunderstand the intent in front of you and trigger betrayal, violence, or flight at the worst possible moment.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_scouting_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'False Alarm', 'effect' => 'You mistake shadows, birds, or brush movement for a threat. The group loses time reacting to nothing.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Distant Blur', 'effect' => 'You spot something far away but cannot tell what it is. You gain only confusion, not clarity.', 'severity' => 'Low'],
+        ['dice' => '21-23', 'result' => 'Eyestrain', 'effect' => 'You stare too long into glare, fog, or dimness. Suffer 1 point of damage to Wits from strain and frustration.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Missed Approach', 'effect' => 'You are watching the wrong direction. An enemy or beast closes distance before the group is warned.', 'severity' => 'High'],
+        ['dice' => '31-33', 'result' => 'Bad Signal', 'effect' => 'You warn your allies too late or too unclearly. They are disorganized when danger arrives.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Silhouette Error', 'effect' => 'You mistake a harmless traveler, patrol, or animal for a deadly threat. A tense encounter begins on the wrong footing.', 'severity' => 'Moderate'],
+        ['dice' => '41-43', 'result' => 'Exposed Position', 'effect' => 'While trying for a better look, you reveal yourself on a ridge, roof, or treeline. Anyone out there can now spot you as well.', 'severity' => 'High'],
+        ['dice' => '44-46', 'result' => 'Chasing Movement', 'effect' => 'You fixate on one suspicious sight and miss the real danger elsewhere. The GM introduces a second threat at close range.', 'severity' => 'High'],
+        ['dice' => '51-53', 'result' => 'Ambush Walk-In', 'effect' => 'You fail to recognize the signs of an ambush until it is sprung. Opponents gain the initiative.', 'severity' => 'Severe'],
+        ['dice' => '54-56', 'result' => 'Friendly Misfire', 'effect' => 'Your report identifies the wrong target or threat. Allies act on faulty information and create immediate complications.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Panic Warning', 'effect' => 'You announce danger with such certainty that the group bolts, scatters, or gives away its location. Everyone loses position.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Blind to the Kill', 'effect' => 'You fail at the one warning that mattered. A hidden or distant threat strikes decisively before anyone can prepare.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_marksmanship_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Wild Shot', 'effect' => 'Your missile goes wide and is lost or lodged somewhere useless. Recovering it is impossible in the moment.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Poor Draw', 'effect' => 'Your grip, draw, or throw is off from the start. The attack leaves you off-balance and exposed.', 'severity' => 'Low'],
+        ['dice' => '21-23', 'result' => 'Snapped String', 'effect' => 'Your bowstring frays or snaps under strain. The weapon cannot be used again until repaired.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Slipped Missile', 'effect' => 'An arrow, stone, or knife slips from your hand at the wrong instant. Your attack fails and you lose your next opening.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Exposed Shooter', 'effect' => 'Your shot reveals your exact position. Enemies immediately know where you are.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Glancing Self-Injury', 'effect' => 'The draw, release, or throw tears skin or wrenches a joint. Suffer 1 point of damage to Agility.', 'severity' => 'Moderate'],
+        ['dice' => '41-43', 'result' => 'Broken Ammunition', 'effect' => 'You ruin or scatter part of your ammunition supply. Reduce one relevant ammo resource or lose D6 shots, GM\'s choice.', 'severity' => 'Moderate'],
+        ['dice' => '44-46', 'result' => 'Obstructed Line', 'effect' => 'You fire through brush, cover, or a moving gap and your shot ricochets or shatters. A nearby ally or object is put at risk.', 'severity' => 'High'],
+        ['dice' => '51-53', 'result' => 'Weapon Dropped', 'effect' => 'In the rush of combat, you drop your ranged weapon into mud, water, or hard ground. Recovering it costs your next fast action or more.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'Friendly Close Call', 'effect' => 'Your attack nearly hits an ally or mount. The ally must react at once or suffer an attack with three Base Dice.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Backlash Shot', 'effect' => 'The shot goes disastrously wrong and leaves you open to a charge, fall, or counterattack. An enemy immediately closes with you.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Devastating Misfire', 'effect' => 'Your missile strikes the wrong target, triggers a dangerous chain of events, or turns the battle against your side.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_lore_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Half-Remembered Tale', 'effect' => 'You recall only fragments of the legend. The information is incomplete and easy to misapply.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Wrong Source', 'effect' => 'You mix up two stories, dynasties, or sacred names. Your explanation sounds plausible but is incorrect.', 'severity' => 'Low'],
+        ['dice' => '21-23', 'result' => 'Old Superstition', 'effect' => 'You repeat a village rumor as if it were fact. The group prepares for the wrong danger.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Misnamed Relic', 'effect' => 'You identify an artifact or site incorrectly. Anyone acting on that claim takes the wrong approach.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Taboo Knowledge', 'effect' => 'You speak aloud a name, oath, or legend that should have been treated carefully. Someone nearby is alarmed or offended.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'False Confidence', 'effect' => 'You are certain the old stories support your conclusion when they do not. The GM may offer a misleading historical detail.', 'severity' => 'Moderate'],
+        ['dice' => '41-43', 'result' => 'Dangerous Curiosity', 'effect' => 'Your explanation encourages someone to touch, open, or disturb something best left alone. Trouble follows immediately.', 'severity' => 'High'],
+        ['dice' => '44-46', 'result' => 'Rival Memory', 'effect' => 'Your display of knowledge attracts the notice of a scholar, cultist, or treasure-seeker with competing aims.', 'severity' => 'Moderate'],
+        ['dice' => '51-53', 'result' => 'Cursed Clue', 'effect' => 'The truth you uncover points straight toward a curse, feud, or ancient threat that now notices your interest.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'Mistaken Weakness', 'effect' => 'You recall the wrong way to ward, appease, or defeat an old danger. The first attempt to deal with it fails badly.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Forbidden Revelation', 'effect' => 'You uncover a truth that destabilizes loyalties, faith, or local peace. The knowledge itself creates immediate conflict.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Legend Awakens', 'effect' => 'Your meddling with old lore stirs an artifact, guardian, or ancient enemy that should have remained forgotten.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
 function rg_get_mishap_tables(): array
 {
     return [
@@ -291,6 +406,26 @@ function rg_get_mishap_tables(): array
         'healing' => [
             'label' => 'Healing Mishaps',
             'rows' => rg_get_healing_mishaps(),
+        ],
+        'survival' => [
+            'label' => 'Survival Mishaps',
+            'rows' => rg_get_survival_mishaps(),
+        ],
+        'insight' => [
+            'label' => 'Insight Mishaps',
+            'rows' => rg_get_insight_mishaps(),
+        ],
+        'scouting' => [
+            'label' => 'Scouting Mishaps',
+            'rows' => rg_get_scouting_mishaps(),
+        ],
+        'marksmanship' => [
+            'label' => 'Marksmanship Mishaps',
+            'rows' => rg_get_marksmanship_mishaps(),
+        ],
+        'lore' => [
+            'label' => 'Lore Mishaps',
+            'rows' => rg_get_lore_mishaps(),
         ],
     ];
 }
