@@ -1,0 +1,40 @@
+.updates-card {
+  display: block;
+}
+
+section[data-generator-panel="npc"] .updates-card {
+  margin-bottom: 0.85rem;
+}
+
+.updates-status {
+  margin-top: 0.35rem;
+  margin-bottom: 0.95rem;
+}
+
+.updates-markdown {
+  border: 2px solid var(--card-line);
+  background: #f9f9f9;
+  color: #1b1b1b;
+  padding: 0.85rem 1rem;
+}
+
+.updates-date {
+  margin: 0.8rem 0 0.35rem;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.02em;
+  font-size: 1rem;
+}
+
+.updates-list {
+  margin: 0.1rem 0 0.45rem 1.2rem;
+  padding: 0;
+}
+
+.updates-list li {
+  margin: 0.2rem 0;
+  line-height: 1.35;
+}
+
+.updates-empty {
+  margin: 0;
+}

@@ -11,6 +11,7 @@ require_once __DIR__ . '/includes/encounter_generator.php';
 require_once __DIR__ . '/includes/scarcity_generator.php';
 require_once __DIR__ . '/includes/mishap_generator.php';
 require_once __DIR__ . '/includes/critical_injuries.php';
+require_once __DIR__ . '/includes/updates.php';
 
 $generatorOptions = rg_get_generator_options();
 $lootOptions = rg_get_loot_options();
@@ -28,6 +29,7 @@ $company = rg_generate_company();
 $encounter = rg_generate_encounter();
 $scarcity = rg_generate_scarcity();
 $magicMishap = rg_generate_mishap(['table' => 'magic']);
+$updatesHtml = rg_render_updates_html(__DIR__ . '/UPDATES.md');
 ?>
 <!doctype html>
 <html lang="en">
@@ -40,12 +42,13 @@ $magicMishap = rg_generate_mishap(['table' => 'magic']);
     <link rel="stylesheet" href="assets/css/critical-injuries.css?v=3">
     <link rel="stylesheet" href="assets/css/scarcity-table.css?v=1">
     <link rel="stylesheet" href="assets/css/mishaps.css?v=1">
+    <link rel="stylesheet" href="assets/css/updates.css?v=1">
 </head>
 <body>
     <header class="top-header">
         <h1 class="header-title">Solomons Ledger Generators</h1>
         <nav class="generator-menu" aria-label="Generator menu">
-            <button type="button" class="menu-button is-active" data-menu-target="npc" aria-pressed="true">NPC Generator</button>
+            <button type="button" class="menu-button" data-menu-target="npc" aria-pressed="false">NPC Generator</button>
             <button type="button" class="menu-button" data-menu-target="loot" aria-pressed="false">Loot Generator</button>
             <button type="button" class="menu-button" data-menu-target="place" aria-pressed="false">Place Generator</button>
             <button type="button" class="menu-button" data-menu-target="romance" aria-pressed="false">Romantic Pair Generator</button>
@@ -59,7 +62,22 @@ $magicMishap = rg_generate_mishap(['table' => 'magic']);
     </header>
 
     <main class="page">
-        <section class="panel" data-generator-panel="npc" aria-live="polite">
+        <section class="panel" data-generator-panel="home" aria-live="polite">
+            <article class="card updates-card">
+                <h2 class="card-title">Welcome to the Forbidden Lands Generator</h2>
+                <p class="value">This page gathers quick generators for Forbidden Lands sessions, including NPCs, encounters, mishaps, loot, and other tools to speed up your prep.</p>
+            </article>
+
+            <article class="card updates-card">
+                <h2 class="card-title">Updates</h2>
+                <p class="status updates-status">Recent project history based on Git commits.</p>
+                <div class="updates-markdown" data-updates-markdown>
+                    <?php echo $updatesHtml; ?>
+                </div>
+            </article>
+        </section>
+
+        <section class="panel is-hidden" data-generator-panel="npc" aria-live="polite">
             <div class="controls">
                 <div class="levels">
                     <label class="field">

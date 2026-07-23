@@ -652,5 +652,5 @@
         scarcityButton.addEventListener('click', generateScarcity);
     }
 
-    setActiveMenu('npc');
+    setActiveMenu('home');
 })();
