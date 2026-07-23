@@ -22,6 +22,7 @@ Then open `http://localhost:8000`.
 The updates below are based on Git commit history and mirror the content in `UPDATES.md`.
 
 ### 2026-07-23
+- feat: include new update logs
 - feat: implement new Make camp and Sea Travel Mishaps
 - feat: implement new Make camp and Sea Travel Mishaps
 
@@ -39,16 +40,3 @@ The updates below are based on Git commit history and mirror the content in `UPD
 
 ### 2026-07-02
 - feat: minification
-- feat: include monsters and encounter
-
-### 2026-07-01
-- feat: include more npcs
-
-### 2026-06-30
-- feat: include more npcs
-- feat: include more itens
-- feat: change to black and white theme
-
-### 2026-06-29
-- feat: include Negotium
-- feat: initial commit
