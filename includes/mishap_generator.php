@@ -140,6 +140,46 @@ function rg_get_fishing_mishaps(): array
     }, $rows);
 }
 
+function rg_get_make_camp_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Spoiled Water', 'effect' => 'The water you are carrying has spoiled. Everyone in the group must reduce their Resource Die for water by one step.', 'severity' => 'Moderate'],
+        ['dice' => '14-16', 'result' => 'Rotten Food', 'effect' => 'Your food has rotted or been infected by insects. Everyone in the group must reduce their Resource Die for food by one step.', 'severity' => 'Moderate'],
+        ['dice' => '21-25', 'result' => 'Bad Campsite', 'effect' => 'Your campsite turns out to be very uncomfortable to sleep in. No one in the group gets any SLEEP at all until you have found a new campsite.', 'severity' => 'High'],
+        ['dice' => '26-32', 'result' => 'Downpour', 'effect' => 'A massive rainfall starts in the middle of the night. The camp is flooded and everything gets soaking wet. All adventurers must roll for the effects of cold, and no one gets any SLEEP this night.', 'severity' => 'High'],
+        ['dice' => '33-36', 'result' => 'Fire Dies', 'effect' => 'The firewood is wet, and your campfire goes out. Everyone in the group must roll for the effects of cold.', 'severity' => 'Moderate'],
+        ['dice' => '41-42', 'result' => 'Fire!', 'effect' => 'Suddenly, the flames from your campfire spread out of control. Your tents, sleeping furs and other gear catch fire. Each adventurer suffers an attack with five Base Dice (Weapon Damage 1). Each adventurer must also make a MOVE roll to save their gear. Failure means that one piece of equipment (the GM decides which) is lost in the fire.', 'severity' => 'Severe'],
+        ['dice' => '43-45', 'result' => 'Ants', 'effect' => 'Your camp sits right in the middle of an ant road. You all suffer 1 point of damage to Agility and no one gets any SLEEP here.', 'severity' => 'Moderate'],
+        ['dice' => '46-51', 'result' => 'Lice', 'effect' => 'A randomly selected adventurer has caught lice. It itches horribly, and the victim gets a rash all over the body. The victim suffers 1 point of damage to Agility each day and cannot SLEEP. A successful HEALING roll stops the effect.', 'severity' => 'High'],
+        ['dice' => '52-54', 'result' => 'Mosquito Swarm', 'effect' => 'A large swarm of mosquitoes or gnats attacks the camp, driving everyone crazy with their bites and buzzing. They attack all adventurers with four Base Dice, causing damage to Empathy.', 'severity' => 'Moderate'],
+        ['dice' => '55-56', 'result' => 'Savage Animal', 'effect' => 'A wolf, bear or other wild animal feels threatened, and attacks you. The GM chooses an animal from the table on page 124 of the Gamemaster\'s Guide.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Lost Gear', 'effect' => 'A randomly selected adventurer has lost a piece of gear. The GM decides what was lost, and if it can be found.', 'severity' => 'Moderate'],
+        ['dice' => '64-66', 'result' => 'Broken Gear', 'effect' => 'An item belonging to a randomly selected adventurer is broken. The GM decides what item it is. The item can be repaired with a CRAFTING roll.', 'severity' => 'Moderate'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_sea_travel_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-16', 'result' => 'Navigational Error', 'effect' => 'You sail off course and make no progress on the map during this Quarter Day.', 'severity' => 'Moderate'],
+        ['dice' => '21-26', 'result' => 'Sudden Squall', 'effect' => 'A sudden squall makes your boat tilt suddenly. One important item falls into the water. The GM decides what it is.', 'severity' => 'Moderate'],
+        ['dice' => '31-36', 'result' => 'Whirlpool', 'effect' => 'Your boat is caught in a whirlpool. The skipper must make a SURVIVAL roll (modified by the SAILOR talent). Failure means the boat runs aground and has to be repaired (a CRAFTING roll) before your journey can continue.', 'severity' => 'Severe'],
+        ['dice' => '41-46', 'result' => 'Leak', 'effect' => 'Your boat springs a leak and takes on water. The leak must be repaired (a CRAFTING roll), which takes one turn (15 minutes), but your journey can continue while you do so. If the leak is not repaired, the boat sinks after D6 hours.', 'severity' => 'High'],
+        ['dice' => '51-56', 'result' => 'Overboard', 'effect' => 'Someone in the group (GM\'s choice) falls overboard after a large wave hits the boat. See rules for swimming and drowning on page 113.', 'severity' => 'Severe'],
+        ['dice' => '61-66', 'result' => 'Grounding', 'effect' => 'Your boat runs aground and must be abandoned or repaired with a CRAFTING roll. The boat must be on the shore to be repaired.', 'severity' => 'Severe'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
 function rg_get_mishap_tables(): array
 {
     return [
@@ -162,6 +202,14 @@ function rg_get_mishap_tables(): array
         'fishing' => [
             'label' => 'Fishing Mishaps',
             'rows' => rg_get_fishing_mishaps(),
+        ],
+        'make_camp' => [
+            'label' => 'Make Camp Mishaps',
+            'rows' => rg_get_make_camp_mishaps(),
+        ],
+        'sea_travel' => [
+            'label' => 'Sea Travel Mishaps',
+            'rows' => rg_get_sea_travel_mishaps(),
         ],
     ];
 }
