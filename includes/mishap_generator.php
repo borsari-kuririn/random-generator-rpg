@@ -364,6 +364,167 @@ function rg_get_lore_mishaps(): array
     }, $rows);
 }
 
+function rg_get_sleight_of_hand_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Fumbled Grip', 'effect' => 'Your fingers slip at the wrong moment and you lose control of the item or tool.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Dropped Tool', 'effect' => 'A pick, pin, blade, or other fine tool falls with an audible click. Someone nearby may notice.', 'severity' => 'Low'],
+        ['dice' => '21-23', 'result' => 'Jammed Lock', 'effect' => 'You force the mechanism the wrong way and the lock sticks. It cannot be tried again until you spend time resetting it.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Caught Sleeve', 'effect' => 'Clothing, jewelry, or gear snags on the object you are working around. Your action slows and attention turns your way.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Visible Theft', 'effect' => 'You lift the item, but not cleanly enough to stay unnoticed. The target or a witness realizes what you tried to do.', 'severity' => 'High'],
+        ['dice' => '34-36', 'result' => 'Broken Pick', 'effect' => 'Your lockpick, wire, or other delicate tool snaps under strain. Lose that tool until replaced.', 'severity' => 'Moderate'],
+        ['dice' => '41-43', 'result' => 'Wrong Pocket', 'effect' => 'You grab the wrong item or plant your hand where it should not be. The mistake creates immediate suspicion.', 'severity' => 'Moderate'],
+        ['dice' => '44-46', 'result' => 'Noisy Attempt', 'effect' => 'Your careful work turns into scraping, rattling, or clattering. Nearby guards, servants, or bystanders are alerted.', 'severity' => 'High'],
+        ['dice' => '51-53', 'result' => 'Pinched Hand', 'effect' => 'The mechanism bites, the lid snaps shut, or a concealed edge cuts you. Suffer 1 point of damage to Agility.', 'severity' => 'Moderate'],
+        ['dice' => '54-56', 'result' => 'Marked as a Thief', 'effect' => 'Your action is clearly seen or loudly accused in public. Your reputation in the scene turns against you at once.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Trap Triggered', 'effect' => 'The lock, jewel case, or hidden catch triggers a bell, needle, latch, or similar defense. Trouble arrives immediately.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Hand in the Lion\'s Mouth', 'effect' => 'You are caught red-handed at the worst possible moment, with the target, guards, or the owner right there to act.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_move_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Slipped Footing', 'effect' => 'Your footing gives way at the last second. You lose momentum and fail to reach the intended position cleanly.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Hard Landing', 'effect' => 'You make the jump or scramble badly and hit the ground awkwardly. Suffer 1 point of damage to Agility.', 'severity' => 'Moderate'],
+        ['dice' => '21-23', 'result' => 'Lost Grip', 'effect' => 'Your hand slips on stone, rope, or ledge. You hang in a bad position and must recover fast or fall.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Twisted Knee', 'effect' => 'You pivot, duck, or sprint at the wrong angle and wrench your leg. Suffer 1 point of damage to Agility.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Collision', 'effect' => 'You crash into terrain, furniture, or another person while moving at speed. Both position and timing are ruined.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Exposed Dodge', 'effect' => 'You avoid the first threat but leave yourself open to the next. An enemy gains an immediate opening against you.', 'severity' => 'High'],
+        ['dice' => '41-43', 'result' => 'Fall', 'effect' => 'You lose balance from a height, ladder, cart, or wall and fall hard. Suffer an attack with four Base Dice.', 'severity' => 'High'],
+        ['dice' => '44-46', 'result' => 'Cornered Escape', 'effect' => 'Your attempt to flee or reposition sends you into a dead end, hazard, or tighter press of enemies.', 'severity' => 'High'],
+        ['dice' => '51-53', 'result' => 'Dropped Gear', 'effect' => 'Something important flies loose while you run, climb, or leap. The GM decides what was dropped and where it lands.', 'severity' => 'Moderate'],
+        ['dice' => '54-56', 'result' => 'Breath Gone', 'effect' => 'The sprint or scramble empties your lungs and wrecks your pace. Suffer 1 point of damage to Strength from overexertion.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Trampled or Pinned', 'effect' => 'You go down in a dangerous spot and are pinned under weight, bodies, or debris until freed.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Fatal Misstep', 'effect' => 'Your movement fails completely at the worst possible moment, placing you in the path of a deadly fall, strike, or capture.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_stealth_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Snapped Twig', 'effect' => 'A small noise escapes you despite your care. Nearby enemies become alert, though they may not know exactly where you are yet.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Rustling Gear', 'effect' => 'Buckles, scabbards, or loose gear scrape and rattle. Your hiding place or approach grows less secure.', 'severity' => 'Low'],
+        ['dice' => '21-23', 'result' => 'Wrong Shadow', 'effect' => 'You choose poor cover or move through the wrong patch of light. Someone catches a glimpse of you.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Held Too Long', 'effect' => 'You stay still or tense too long in a cramped place. Suffer 1 point of damage to Agility from strain and numbness.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Tracked Movement', 'effect' => 'Your tracks, shifted brush, or disturbed dust reveal your route. An alert foe starts following the signs.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Premature Strike', 'effect' => 'You launch your sneak attack too early or from bad footing. The surprise is spoiled before the blow lands.', 'severity' => 'High'],
+        ['dice' => '41-43', 'result' => 'Watcher\'s Eye', 'effect' => 'The enemy scout or sentry reads the movement correctly and focuses on your position.', 'severity' => 'High'],
+        ['dice' => '44-46', 'result' => 'Startled Witness', 'effect' => 'A servant, child, animal, or bystander notices you and reacts with noise or panic.', 'severity' => 'Moderate'],
+        ['dice' => '51-53', 'result' => 'Tangled Cloak', 'effect' => 'Your clothing or gear catches on wood, brush, or ironwork while you are trying to stay quiet. You are briefly stuck and exposed.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'Hidden No More', 'effect' => 'Your concealment fails at close range. The enemy sees you before you are ready to act.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Alarm Raised', 'effect' => 'Your failed sneak draws a full warning shout, bell, horn, or other clear alarm.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Ambusher Reversed', 'effect' => 'Instead of catching your foe unaware, you walk into their prepared watch or counter-ambush.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_might_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Strained Back', 'effect' => 'You overcommit and wrench your back or shoulders. Suffer 1 point of damage to Strength.', 'severity' => 'Moderate'],
+        ['dice' => '14-16', 'result' => 'Slipped Grip', 'effect' => 'Your hands slide off what you were lifting, pulling, or holding. The effort fails and control is lost.', 'severity' => 'Low'],
+        ['dice' => '21-23', 'result' => 'Finger Crush', 'effect' => 'Weight shifts suddenly and crushes or pinches your hand. Suffer 1 point of damage to Agility or Strength, GM\'s choice.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Unbalanced Heave', 'effect' => 'You move the object, but badly. It topples, rolls, or crashes where you did not intend.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Torn Muscle', 'effect' => 'The effort tears something in your arm, chest, or leg. Suffer 1 point of damage to Strength and stop the attempt.', 'severity' => 'High'],
+        ['dice' => '34-36', 'result' => 'Broken Handle', 'effect' => 'Rope, lever, strap, haft, or handle gives out under the load. The tool or setup is ruined.', 'severity' => 'Moderate'],
+        ['dice' => '41-43', 'result' => 'Dropped Load', 'effect' => 'What you are lifting or carrying falls hard, damaging the cargo, the ground, or someone nearby.', 'severity' => 'High'],
+        ['dice' => '44-46', 'result' => 'Pinned Under Weight', 'effect' => 'The load shifts onto you instead of away from you. You are trapped until someone helps free you.', 'severity' => 'High'],
+        ['dice' => '51-53', 'result' => 'Violent Recoil', 'effect' => 'The thing you were holding shut, bracing, or restraining bursts loose with force. You are thrown or struck.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'Structural Failure', 'effect' => 'Door, beam, wagon part, or other stressed object breaks suddenly under pressure. The whole situation gets worse immediately.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Crushing Injury', 'effect' => 'The failed feat of strength inflicts a serious blow. Suffer an attack with five Base Dice.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Catastrophic Collapse', 'effect' => 'Your failed exertion brings down, releases, or unleashes something large and dangerous on everyone nearby.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_endurance_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Winded', 'effect' => 'The effort drains you faster than expected. Suffer 1 point of damage to Strength.', 'severity' => 'Moderate'],
+        ['dice' => '14-16', 'result' => 'Shaking Limbs', 'effect' => 'Cold, exhaustion, or pain makes your body tremble. Your pace and confidence falter.', 'severity' => 'Low'],
+        ['dice' => '21-23', 'result' => 'Cramping Pain', 'effect' => 'Muscles seize under the strain of the journey. You must stop briefly and lose valuable time.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Numb Extremities', 'effect' => 'Bitter weather or overuse deadens your hands and feet. Suffer 1 point of damage to Agility.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Ragged Breathing', 'effect' => 'You push too hard and cannot catch your breath. The next stretch of travel or struggle becomes slower and harsher.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Feverish Chill', 'effect' => 'Exposure starts to settle into your body. Roll for the effects of cold, or worsen an existing cold condition.', 'severity' => 'High'],
+        ['dice' => '41-43', 'result' => 'Collapse at Rest', 'effect' => 'When you finally stop, your legs nearly give out beneath you. You cannot keep going without a meaningful pause.', 'severity' => 'Moderate'],
+        ['dice' => '44-46', 'result' => 'Pain Takes Over', 'effect' => 'Whatever hurt you were ignoring surges back to the front. You lose the ability to push on without help or shelter.', 'severity' => 'High'],
+        ['dice' => '51-53', 'result' => 'Exhausted March', 'effect' => 'You keep moving, but at too great a cost. Everyone depending on your pace loses time or ground this stretch.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'Exposure Damage', 'effect' => 'The road, cold, or suffering bites deep. Suffer 1 point of damage to Strength and 1 point to Agility.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Body Gives Out', 'effect' => 'You can no longer force yourself onward. You fall prone or become unable to continue until treated or rested.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Frozen or Broken', 'effect' => 'The strain of pain and exposure becomes life-threatening. Immediate aid or shelter is needed to prevent disaster.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_melee_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Off-Balance Swing', 'effect' => 'Your attack overextends you and leaves you off-balance.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Bad Parry', 'effect' => 'Your defense comes in too early or too late. The opening remains for your foe to exploit.', 'severity' => 'Moderate'],
+        ['dice' => '21-23', 'result' => 'Weapon Jolt', 'effect' => 'The impact runs painfully up your arms. Suffer 1 point of damage to Strength.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Lost Footing', 'effect' => 'You slip in mud, blood, rubble, or clutter while striking or parrying.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Open Guard', 'effect' => 'You commit too hard and leave your side, neck, or legs exposed. An enemy gains an immediate advantage.', 'severity' => 'High'],
+        ['dice' => '34-36', 'result' => 'Weapon Stuck', 'effect' => 'Your blade bites too deep, your haft catches, or your weapon is momentarily trapped.', 'severity' => 'Moderate'],
+        ['dice' => '41-43', 'result' => 'Broken Grip', 'effect' => 'Sweat, blood, or impact tears the weapon loose from your hand. Recovering it costs time you do not have.', 'severity' => 'High'],
+        ['dice' => '44-46', 'result' => 'Friendly Interference', 'effect' => 'You crowd an ally, spoil their line, or nearly strike them in the chaos of close combat.', 'severity' => 'Moderate'],
+        ['dice' => '51-53', 'result' => 'Shield or Weapon Damage', 'effect' => 'The exchange damages your weapon or shield. Its Gear Bonus drops one step until repaired.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'Counter Cut', 'effect' => 'Your failure gives the opponent a clean counterattack or brutal shove. Suffer an attack with four Base Dice.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Brutal Reversal', 'effect' => 'The fight turns in a heartbeat. You are disarmed, driven down, or pinned in melee range.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Killing Opening', 'effect' => 'Your failed strike or parry leaves you exposed to a devastating blow at the worst possible moment.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_crafting_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Wasted Time', 'effect' => 'Hours of careful work produce no usable progress. The materials remain, but the time is lost.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Misfit Part', 'effect' => 'You shape or fit a piece incorrectly. The item cannot be finished until the part is redone.', 'severity' => 'Moderate'],
+        ['dice' => '21-23', 'result' => 'Split Material', 'effect' => 'Wood cracks, leather tears, or metal warps while you work it. Lose part of the raw materials.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Dulled or Broken Tool', 'effect' => 'A key tool is damaged by the strain of the job. The work slows until you repair or replace it.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Botched Repair', 'effect' => 'The repair seems sound at first, but the item\'s Gear Bonus drops one step instead of improving.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Unsafe Build', 'effect' => 'The crafted item comes out flawed or unstable. It works briefly, then fails under real use.', 'severity' => 'High'],
+        ['dice' => '41-43', 'result' => 'Materials Spent', 'effect' => 'You ruin the batch, strip, or set of parts needed for the job. The raw materials are spent and must be replaced.', 'severity' => 'High'],
+        ['dice' => '44-46', 'result' => 'Exhausting Labor', 'effect' => 'The work takes more out of you than expected. Suffer 1 point of damage to Strength.', 'severity' => 'Moderate'],
+        ['dice' => '51-53', 'result' => 'Workshop Mishap', 'effect' => 'Sparks, blades, heat, or falling weight injure you during the work. Suffer an attack with three Base Dice.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'Ruined Item', 'effect' => 'The item being repaired or crafted is rendered unusable. If it was already near failure, it is destroyed.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Costly Failure', 'effect' => 'You lose the item, the materials, and the time, and you cannot attempt the same project again until your approach changes.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Catastrophic Build', 'effect' => 'Your work causes a major break, dangerous failure, or destructive accident that affects more than just the item on the bench.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
 function rg_get_mishap_tables(): array
 {
     return [
@@ -426,6 +587,34 @@ function rg_get_mishap_tables(): array
         'lore' => [
             'label' => 'Lore Mishaps',
             'rows' => rg_get_lore_mishaps(),
+        ],
+        'sleight_of_hand' => [
+            'label' => 'Sleight of Hand Mishaps',
+            'rows' => rg_get_sleight_of_hand_mishaps(),
+        ],
+        'move' => [
+            'label' => 'Move Mishaps',
+            'rows' => rg_get_move_mishaps(),
+        ],
+        'stealth' => [
+            'label' => 'Stealth Mishaps',
+            'rows' => rg_get_stealth_mishaps(),
+        ],
+        'might' => [
+            'label' => 'Might Mishaps',
+            'rows' => rg_get_might_mishaps(),
+        ],
+        'endurance' => [
+            'label' => 'Endurance Mishaps',
+            'rows' => rg_get_endurance_mishaps(),
+        ],
+        'melee' => [
+            'label' => 'Melee Mishaps',
+            'rows' => rg_get_melee_mishaps(),
+        ],
+        'crafting' => [
+            'label' => 'Crafting Mishaps',
+            'rows' => rg_get_crafting_mishaps(),
         ],
     ];
 }
