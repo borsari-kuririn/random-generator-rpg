@@ -180,6 +180,75 @@ function rg_get_sea_travel_mishaps(): array
     }, $rows);
 }
 
+function rg_get_performance_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Nervous Opening', 'effect' => 'Your first notes are shaky and the crowd notices. The scene starts poorly, and any recovery attempt from this performance is spoiled.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Forgotten Words', 'effect' => 'You forget lyrics, cues, or lines. The performance stalls as you scramble to recover your place.', 'severity' => 'Low'],
+        ['dice' => '21-23', 'result' => 'Hoarse Voice', 'effect' => 'Your throat gives out or your breath runs short. Suffer 1 point of damage to Empathy.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Broken Prop', 'effect' => 'A string snaps, a drum tears, or a costume piece fails. The act cannot continue until you repair or replace the prop.', 'severity' => 'Low'],
+        ['dice' => '31-33', 'result' => 'Misread Audience', 'effect' => 'You read the room wrong and play the wrong mood. The audience grows cold, and their attitude drops one step.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Offensive Verse', 'effect' => 'You sing or play something taboo, insulting, or politically dangerous. Someone in the crowd takes offense and may confront you.', 'severity' => 'High'],
+        ['dice' => '41-43', 'result' => 'Stage Fright', 'effect' => 'Panic hits mid-performance. Suffer 1 point of damage to Empathy and lose your nerve before the next scene.', 'severity' => 'Moderate'],
+        ['dice' => '44-46', 'result' => 'Rival Interruption', 'effect' => 'A rival performer, heckler, or loud patron cuts in and steals the spotlight. You lose control of the moment and the performance ends early.', 'severity' => 'Moderate'],
+        ['dice' => '51-53', 'result' => 'Thrown Objects', 'effect' => 'The crowd turns hostile and throws bottles, fruit, or worse. Suffer an attack with four Base Dice, causing damage to Empathy.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'False Blasphemy', 'effect' => 'Your song is mistaken for mockery or sacrilege. Guards, zealots, or angry villagers demand answers or force you out.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Crushing Crowd', 'effect' => 'The audience surges forward, trampling props and jostling you hard. Suffer 1 point of damage to Strength or Agility, GM\'s choice.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Riot Spark', 'effect' => 'Your performance ignites panic or violence in the crowd. A riot or brawl breaks out, and you are caught in the center of it.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_animal_handling_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Skittish Start', 'effect' => 'The animal bolts or refuses to settle. The attempt begins badly, and the creature will not cooperate until the situation changes.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Startled Beast', 'effect' => 'You move too fast or speak at the wrong moment. The animal panics and the attempt must be made again later.', 'severity' => 'Low'],
+        ['dice' => '21-23', 'result' => 'Bite or Claw', 'effect' => 'The animal lashes out in fear. Suffer 1 point of damage to Empathy or Agility, GM\'s choice.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Broken Lead', 'effect' => 'A lead, rope, or rein snaps. The animal breaks free and must be caught again before you can continue.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Wrong Signal', 'effect' => 'You misread the animal\'s behavior and push too hard. The attempt fails, and the animal becomes more difficult to calm.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Exhausted Mount', 'effect' => 'You push the mount too far and tire it out. The animal is exhausted and cannot be ridden or trained further until it rests.', 'severity' => 'High'],
+        ['dice' => '41-43', 'result' => 'Unwanted Attention', 'effect' => 'Your efforts draw the notice of nearby predators or people. A hostile or curious presence approaches the scene.', 'severity' => 'Moderate'],
+        ['dice' => '44-46', 'result' => 'Mud and Panic', 'effect' => 'The animal thrashes into mud, brush, or equipment and throws the whole attempt into chaos. You lose time and must start over later.', 'severity' => 'Moderate'],
+        ['dice' => '51-53', 'result' => 'Escape Attempt', 'effect' => 'The animal slips its bonds and runs. You must recover it before the work can continue.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'Dangerous Kick', 'effect' => 'A mount or large beast lashes out hard. Suffer an attack with four Base Dice, causing damage to Agility or Strength.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Training Setback', 'effect' => 'The animal remembers the stress of the encounter and resists you afterward. Any future attempt to handle it becomes harder until it is calmed or rested.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Fatal Fright', 'effect' => 'The animal bolts into danger, wrecks gear, or injures someone nearby before you can stop it. The situation spirals into a severe mishap.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
+function rg_get_healing_mishaps(): array
+{
+    $rows = [
+        ['dice' => '11-13', 'result' => 'Clumsy Bandage', 'effect' => 'Your first aid is awkward and ineffective. The patient gains no immediate benefit from your treatment.', 'severity' => 'Low'],
+        ['dice' => '14-16', 'result' => 'Poorly Cleaned Wound', 'effect' => 'You fail to clean the injury properly. The wound remains vulnerable, and infection risk increases at the GM\'s discretion.', 'severity' => 'Moderate'],
+        ['dice' => '21-23', 'result' => 'Panic at Blood', 'effect' => 'The sight of the injury shakes you. Suffer 1 point of damage to Empathy, and the treatment stalls.', 'severity' => 'Moderate'],
+        ['dice' => '24-26', 'result' => 'Worsened Pain', 'effect' => 'You touch a sensitive injury the wrong way. The patient suffers additional pain and may refuse further treatment for a while.', 'severity' => 'Moderate'],
+        ['dice' => '31-33', 'result' => 'Wrong Remedy', 'effect' => 'You use the wrong herbs, splints, or method. The recovery attempt fails, and the patient must wait before trying again.', 'severity' => 'Moderate'],
+        ['dice' => '34-36', 'result' => 'Opened Wound', 'effect' => 'Your work reopens the injury. The patient bleeds again and the original wound becomes harder to treat.', 'severity' => 'High'],
+        ['dice' => '41-43', 'result' => 'Wasted Supplies', 'effect' => 'Bandages, herbs, or other medicine are used up with little effect. Lose one relevant item or supply, GM\'s choice.', 'severity' => 'Low'],
+        ['dice' => '44-46', 'result' => 'Shaken Patient', 'effect' => 'The patient loses confidence and becomes difficult to treat. Any further healing attempt on that patient suffers a setback until calmed.', 'severity' => 'Moderate'],
+        ['dice' => '51-53', 'result' => 'Hidden Complication', 'effect' => 'You miss a deeper injury or illness. The patient appears stable, but a serious problem remains untreated.', 'severity' => 'High'],
+        ['dice' => '54-56', 'result' => 'Fever Breaks Out', 'effect' => 'The wound or illness worsens into fever or infection. The patient takes a severe turn for the worse unless treated quickly.', 'severity' => 'High'],
+        ['dice' => '61-63', 'result' => 'Failed Save', 'effect' => 'The patient slips from your care at the worst moment. A critical injury or broken condition remains unresolved, and time is lost.', 'severity' => 'Severe'],
+        ['dice' => '64-66', 'result' => 'Life on the Brink', 'effect' => 'Your attempt goes disastrously wrong and the patient is left in immediate danger. Another intervention is needed at once or the outcome may become fatal.', 'severity' => 'Catastrophic'],
+    ];
+
+    return array_map(function (array $row): array {
+        $row['values'] = rg_mishap_expand_d66_values($row['dice']);
+        return $row;
+    }, $rows);
+}
+
 function rg_get_mishap_tables(): array
 {
     return [
@@ -210,6 +279,18 @@ function rg_get_mishap_tables(): array
         'sea_travel' => [
             'label' => 'Sea Travel Mishaps',
             'rows' => rg_get_sea_travel_mishaps(),
+        ],
+        'performance' => [
+            'label' => 'Performance Mishaps',
+            'rows' => rg_get_performance_mishaps(),
+        ],
+        'animal_handling' => [
+            'label' => 'Animal Handling Mishaps',
+            'rows' => rg_get_animal_handling_mishaps(),
+        ],
+        'healing' => [
+            'label' => 'Healing Mishaps',
+            'rows' => rg_get_healing_mishaps(),
         ],
     ];
 }
