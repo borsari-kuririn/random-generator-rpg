@@ -19,6 +19,12 @@
     var lootStatus = document.querySelector('[data-loot-status]');
     var lootItems = document.querySelector('[data-loot-items]');
 
+    var bookButton = document.querySelector('[data-book-generate-button]');
+    var bookFocus = document.querySelector('[data-book-focus]');
+    var bookCollection = document.querySelector('[data-book-collection]');
+    var bookFields = document.querySelectorAll('[data-book-field]');
+    var bookStatus = document.querySelector('[data-book-status]');
+
     var placeButton = document.querySelector('[data-place-generate-button]');
     var placeType = document.querySelector('[data-place-type]');
     var placeOccupants = document.querySelector('[data-place-occupants]');
@@ -135,6 +141,23 @@
 
         placeButton.disabled = isLoading;
         placeButton.textContent = isLoading ? 'Generating...' : 'Generate Place';
+    }
+
+    function setBookLoading(isLoading) {
+        if (!bookButton) {
+            return;
+        }
+
+        bookButton.disabled = isLoading;
+        bookButton.textContent = isLoading ? 'Generating...' : 'Generate Book';
+    }
+
+    function renderBook(book) {
+        bookFields.forEach(function (field) {
+            var key = field.getAttribute('data-book-field');
+            field.textContent = book[key] || '-';
+            flashElement(field);
+        });
     }
 
     function renderPlace(place) {
@@ -432,6 +455,51 @@
         }
     }
 
+    async function generateBook() {
+        setBookLoading(true);
+        bookStatus.textContent = 'Cataloging an ancient volume...';
+
+        try {
+            var focus = bookFocus ? bookFocus.value.trim() : '';
+            var collection = bookCollection ? bookCollection.value.trim() : '';
+            var params = [];
+
+            if (focus) {
+                params.push('focus=' + encodeURIComponent(focus));
+            }
+            if (collection) {
+                params.push('collection=' + encodeURIComponent(collection));
+            }
+
+            var url = 'api/generate_storyline_lore_book.php';
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            var response = await fetch(url, {
+                method: 'GET',
+                headers: {'Accept': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error('HTTP failure: ' + response.status);
+            }
+
+            var data = await response.json();
+            if (!data.ok || !data.book) {
+                throw new Error('Invalid server response.');
+            }
+
+            renderBook(data.book);
+            bookStatus.textContent = 'Book generated successfully.';
+        } catch (error) {
+            bookStatus.textContent = 'Could not generate a book right now. Please try again.';
+            console.error(error);
+        } finally {
+            setBookLoading(false);
+        }
+    }
+
     async function generateRomance() {
         setRomanceLoading(true);
         romanceStatus.textContent = 'Weaving fate and hearts...';
@@ -635,6 +703,9 @@
     }
     if (lootButton) {
         lootButton.addEventListener('click', generateLoot);
+    }
+    if (bookButton) {
+        bookButton.addEventListener('click', generateBook);
     }
     if (placeButton) {
         placeButton.addEventListener('click', generatePlace);

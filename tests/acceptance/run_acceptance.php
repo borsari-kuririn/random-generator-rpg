@@ -47,6 +47,7 @@ $scenarios = [
 
             return assertContains($body, 'Solomons Ledger Generators', $messages)
                 && assertContains($body, 'data-menu-target="npc"', $messages)
+                && assertContains($body, 'data-menu-target="books"', $messages)
                 && assertContains($body, 'data-menu-target="critical-injury"', $messages)
                 && assertContains($body, 'data-generator-panel="mishap"', $messages);
         },
@@ -91,6 +92,32 @@ $scenarios = [
                 && assertTrue(is_array($loot['items']) && count($loot['items']) > 0, 'Loot items must be a non-empty array.', $messages)
                 && assertTrue($item !== null, 'First loot item must exist.', $messages)
                 && assertHasKeys($item ?? [], ['name', 'type', 'value', 'detail', 'condition'], 'loot.items[0]', $messages);
+        },
+    ],
+    [
+        'id' => 'books-api-default',
+        'description' => 'Storyline/Lore books API returns a book tied to a major collection.',
+        'path' => '/api/generate_storyline_lore_book.php',
+        'expected_status' => 200,
+        'validator' => static function (array $response, array &$messages): bool {
+            $json = decodeJsonBody($response['body'], $messages);
+            if ($json === null) {
+                return false;
+            }
+
+            if (!assertOkPayload($json, 'book', $messages)) {
+                return false;
+            }
+
+            return assertHasKeys(
+                $json['book'],
+                ['collection_key', 'collection_name', 'focus', 'focus_label', 'volume', 'max_volume', 'title', 'volume_label', 'synopsis', 'campaign_hook', 'collector_goal', 'related_lead'],
+                'book',
+                $messages
+            )
+                && assertTrue(is_numeric($json['book']['volume']), 'Book volume must be numeric.', $messages)
+                && assertTrue((int)$json['book']['volume'] >= 1, 'Book volume must be at least 1.', $messages)
+                && assertTrue((string)$json['book']['collection_name'] !== '', 'Collection name must not be empty.', $messages);
         },
     ],
     [

@@ -1,26 +1,27 @@
 # Acceptance Test Report
 
-- Generated: 2026-08-01 18:50:31 UTC
+- Generated: 2026-08-01 21:46:04 UTC
 - Base URL: http://127.0.0.1:8000
-- Total scenarios: 13
-- Passed: 13
+- Total scenarios: 14
+- Passed: 14
 - Failed: 0
 
 | Scenario | Result | HTTP | Duration |
 | --- | --- | --- | --- |
-| home-page-loads | PASS | 200/200 | 31.68 ms |
-| npc-api-default | PASS | 200/200 | 13.67 ms |
-| loot-api-pocket | PASS | 200/200 | 15.37 ms |
-| place-api-default | PASS | 200/200 | 13.77 ms |
-| romance-api-default | PASS | 200/200 | 20.67 ms |
-| company-api-default | PASS | 200/200 | 12.36 ms |
-| encounter-api-default | PASS | 200/200 | 12.90 ms |
-| scarcity-api-default | PASS | 200/200 | 15.05 ms |
-| mishap-api-valid-d66 | PASS | 200/200 | 14.76 ms |
-| mishap-api-invalid-dice | PASS | 400/400 | 2.78 ms |
-| critical-injury-valid-d66 | PASS | 200/200 | 12.49 ms |
-| critical-injury-invalid-dice | PASS | 400/400 | 20.33 ms |
-| playwright-ui-shared-session | PASS | 0/0 | 2812.28 ms |
+| home-page-loads | PASS | 200/200 | 48.30 ms |
+| npc-api-default | PASS | 200/200 | 2.17 ms |
+| loot-api-pocket | PASS | 200/200 | 4.05 ms |
+| books-api-default | PASS | 200/200 | 1.59 ms |
+| place-api-default | PASS | 200/200 | 14.98 ms |
+| romance-api-default | PASS | 200/200 | 12.90 ms |
+| company-api-default | PASS | 200/200 | 11.79 ms |
+| encounter-api-default | PASS | 200/200 | 12.64 ms |
+| scarcity-api-default | PASS | 200/200 | 18.26 ms |
+| mishap-api-valid-d66 | PASS | 200/200 | 14.84 ms |
+| mishap-api-invalid-dice | PASS | 400/400 | 13.18 ms |
+| critical-injury-valid-d66 | PASS | 200/200 | 18.71 ms |
+| critical-injury-invalid-dice | PASS | 400/400 | 13.04 ms |
+| playwright-ui-shared-session | PASS | 0/0 | 5490.49 ms |
 
 ## home-page-loads
 
@@ -29,7 +30,7 @@
 - Result: PASS
 - Expected HTTP: 200
 - Actual HTTP: 200
-- Duration: 31.68 ms
+- Duration: 48.30 ms
 - Checks:
   - All assertions passed.
 
@@ -40,7 +41,7 @@
 - Result: PASS
 - Expected HTTP: 200
 - Actual HTTP: 200
-- Duration: 13.67 ms
+- Duration: 2.17 ms
 - Checks:
   - All assertions passed.
 
@@ -51,7 +52,18 @@
 - Result: PASS
 - Expected HTTP: 200
 - Actual HTTP: 200
-- Duration: 15.37 ms
+- Duration: 4.05 ms
+- Checks:
+  - All assertions passed.
+
+## books-api-default
+
+- Description: Storyline/Lore books API returns a book tied to a major collection.
+- Request: /api/generate_storyline_lore_book.php
+- Result: PASS
+- Expected HTTP: 200
+- Actual HTTP: 200
+- Duration: 1.59 ms
 - Checks:
   - All assertions passed.
 
@@ -62,7 +74,7 @@
 - Result: PASS
 - Expected HTTP: 200
 - Actual HTTP: 200
-- Duration: 13.77 ms
+- Duration: 14.98 ms
 - Checks:
   - All assertions passed.
 
@@ -73,7 +85,7 @@
 - Result: PASS
 - Expected HTTP: 200
 - Actual HTTP: 200
-- Duration: 20.67 ms
+- Duration: 12.90 ms
 - Checks:
   - All assertions passed.
 
@@ -84,7 +96,7 @@
 - Result: PASS
 - Expected HTTP: 200
 - Actual HTTP: 200
-- Duration: 12.36 ms
+- Duration: 11.79 ms
 - Checks:
   - All assertions passed.
 
@@ -95,7 +107,7 @@
 - Result: PASS
 - Expected HTTP: 200
 - Actual HTTP: 200
-- Duration: 12.90 ms
+- Duration: 12.64 ms
 - Checks:
   - All assertions passed.
 
@@ -106,7 +118,7 @@
 - Result: PASS
 - Expected HTTP: 200
 - Actual HTTP: 200
-- Duration: 15.05 ms
+- Duration: 18.26 ms
 - Checks:
   - All assertions passed.
 
@@ -117,7 +129,7 @@
 - Result: PASS
 - Expected HTTP: 200
 - Actual HTTP: 200
-- Duration: 14.76 ms
+- Duration: 14.84 ms
 - Checks:
   - All assertions passed.
 
@@ -128,7 +140,7 @@
 - Result: PASS
 - Expected HTTP: 400
 - Actual HTTP: 400
-- Duration: 2.78 ms
+- Duration: 13.18 ms
 - Checks:
   - All assertions passed.
 
@@ -139,7 +151,7 @@
 - Result: PASS
 - Expected HTTP: 200
 - Actual HTTP: 200
-- Duration: 12.49 ms
+- Duration: 18.71 ms
 - Checks:
   - All assertions passed.
 
@@ -150,7 +162,7 @@
 - Result: PASS
 - Expected HTTP: 400
 - Actual HTTP: 400
-- Duration: 20.33 ms
+- Duration: 13.04 ms
 - Checks:
   - All assertions passed.
 
@@ -161,7 +173,7 @@
 - Result: PASS
 - Expected HTTP: 0
 - Actual HTTP: 0
-- Duration: 2812.28 ms
+- Duration: 5490.49 ms
 - Checks:
   - All assertions passed.
 

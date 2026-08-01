@@ -73,7 +73,7 @@ function rg_get_combined_item_pool(): array
     $clothes = rg_get_clothes();
     foreach ($clothes as $item) {
         $item['category'] = 'Clothes';
-        $item['type'] = $item['type'] ?? 'Clothing';
+        $item['type'] = $item['type'] ?? 'Clothing';v
         $item['value'] = $item['price'] ?? 'Unknown value';
         $item['detail'] = ($item['material'] ?? 'Unknown') . ' - ' . ($item['condition'] ?? 'Average condition');
         $pool[] = $item;

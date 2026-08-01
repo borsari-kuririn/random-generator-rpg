@@ -10,6 +10,7 @@ require_once __DIR__ . '/includes/company_generator.php';
 require_once __DIR__ . '/includes/encounter_generator.php';
 require_once __DIR__ . '/includes/scarcity_generator.php';
 require_once __DIR__ . '/includes/mishap_generator.php';
+require_once __DIR__ . '/includes/storyline_lore_book_generator.php';
 require_once __DIR__ . '/includes/critical_injuries.php';
 require_once __DIR__ . '/includes/updates.php';
 
@@ -21,6 +22,7 @@ $companyOptions = rg_get_company_options();
 $encounterOptions = rg_get_encounter_options();
 $scarcityOptions = rg_get_scarcity_options();
 $mishapOptions = rg_get_mishap_options();
+$bookOptions = rg_get_storyline_lore_book_options();
 $npc = rg_generate_npc();
 $loot = rg_generate_loot();
 $place = rg_generate_place();
@@ -29,6 +31,7 @@ $company = rg_generate_company();
 $encounter = rg_generate_encounter();
 $scarcity = rg_generate_scarcity();
 $magicMishap = rg_generate_mishap(['table' => 'magic']);
+$book = rg_generate_storyline_lore_book();
 $updatesHtml = rg_render_updates_html(__DIR__ . '/UPDATES.md');
 ?>
 <!doctype html>
@@ -50,6 +53,7 @@ $updatesHtml = rg_render_updates_html(__DIR__ . '/UPDATES.md');
         <nav class="generator-menu" aria-label="Generator menu">
             <button type="button" class="menu-button" data-menu-target="npc" aria-pressed="false">NPC Generator</button>
             <button type="button" class="menu-button" data-menu-target="loot" aria-pressed="false">Loot Generator</button>
+            <button type="button" class="menu-button" data-menu-target="books" aria-pressed="false">Storyline and Lore Books</button>
             <button type="button" class="menu-button" data-menu-target="place" aria-pressed="false">Place Generator</button>
             <button type="button" class="menu-button" data-menu-target="romance" aria-pressed="false">Romantic Pair Generator</button>
             <button type="button" class="menu-button" data-menu-target="company" aria-pressed="false">Company Generator</button>
@@ -257,6 +261,74 @@ $updatesHtml = rg_render_updates_html(__DIR__ . '/UPDATES.md');
                         </li>
                     <?php endforeach; ?>
                 </ul>
+            </article>
+        </section>
+
+        <section class="panel is-hidden" data-generator-panel="books" aria-live="polite">
+            <div class="controls">
+                <div class="filters filters-two">
+                    <label class="field">
+                        <span>Book focus</span>
+                        <select data-book-focus>
+                            <option value="">Any</option>
+                            <?php foreach ($bookOptions['focuses'] as $focusOption): ?>
+                                <option value="<?php echo htmlspecialchars($focusOption, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars(ucfirst($focusOption), ENT_QUOTES, 'UTF-8'); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                    <label class="field">
+                        <span>Major collection</span>
+                        <select data-book-collection>
+                            <option value="">Any</option>
+                            <?php foreach ($bookOptions['collections'] as $collectionKey => $collectionName): ?>
+                                <option value="<?php echo htmlspecialchars((string)$collectionKey, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars((string)$collectionName, ENT_QUOTES, 'UTF-8'); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button type="button" data-book-generate-button>Generate Book</button>
+                    <p class="status" data-book-status>Ready to discover a new tome for your collection.</p>
+                </div>
+            </div>
+
+            <article class="card">
+                <h2 class="card-title" data-book-field="title"><?php echo htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                <div class="grid">
+                    <div class="item">
+                        <strong>Major collection</strong>
+                        <p class="value" data-book-field="collection_name"><?php echo htmlspecialchars($book['collection_name'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Focus</strong>
+                        <p class="value" data-book-field="focus_label"><?php echo htmlspecialchars($book['focus_label'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Volume</strong>
+                        <p class="value" data-book-field="volume_label"><?php echo htmlspecialchars($book['volume_label'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Subtitle</strong>
+                        <p class="value" data-book-field="subtitle"><?php echo htmlspecialchars($book['subtitle'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Synopsis</strong>
+                        <p class="value" data-book-field="synopsis"><?php echo htmlspecialchars($book['synopsis'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Campaign hook</strong>
+                        <p class="value" data-book-field="campaign_hook"><?php echo htmlspecialchars($book['campaign_hook'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Collector goal</strong>
+                        <p class="value" data-book-field="collector_goal"><?php echo htmlspecialchars($book['collector_goal'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="item">
+                        <strong>Lead to next volume</strong>
+                        <p class="value" data-book-field="related_lead"><?php echo htmlspecialchars($book['related_lead'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                </div>
             </article>
         </section>
 
@@ -833,7 +905,7 @@ $updatesHtml = rg_render_updates_html(__DIR__ . '/UPDATES.md');
         </p>
     </main>
 
-    <script src="assets/js/app.js?v=5" defer></script>
+    <script src="assets/js/app.js?v=6" defer></script>
     <script src="assets/js/mishaps.js?v=2" defer></script>
     <script src="assets/js/critical-injuries.js?v=3" defer></script>
     <script>
