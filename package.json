@@ -1,0 +1,13 @@
+{
+  "name": "random-generator-rpg",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "acceptance": "php tests/acceptance/run_acceptance.php --base-url=http://127.0.0.1:8000 --output=reports/acceptance/latest.md",
+    "playwright:session": "node tests/playwright/create_shared_session.mjs",
+    "playwright:ui": "node tests/playwright/run_ui_smoke.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.55.0"
+  }
+}
